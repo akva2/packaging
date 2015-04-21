@@ -1,0 +1,21 @@
+Source: ttl
+Priority: extra
+Maintainer: Arne Morten Kvarving <arne.morten.kvarving@sintef.no>
+Build-Depends: debhelper (>= 8.0.0), cmake
+Standards-Version: 3.9.2
+Section: libs
+Homepage: http://www.sintef.no/Projectweb/Geometry-Toolkits/GoTools/
+
+Package: libttl-dev
+Section: libdevel
+Architecture: any
+Depends: libttl1 (= ${binary:Version})
+Description: The TTL library -- development files
+ bla bla
+
+Package: libttl1
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: The TTL library
+ bla bla
