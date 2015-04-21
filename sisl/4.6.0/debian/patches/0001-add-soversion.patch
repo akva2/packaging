@@ -1,0 +1,24 @@
+From 8fabbcb32229734d54b50e030741906cf05e12f6 Mon Sep 17 00:00:00 2001
+From: Arne Morten Kvarving <arne.morten.kvarving@sintef.no>
+Date: Tue, 21 Apr 2015 14:40:05 +0200
+Subject: [PATCH] add soversion
+
+---
+ CMakeLists.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 47643a0..24c3852 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -20,6 +20,7 @@ FILE(GLOB sisl_SRCS src/*.c include/*.h)
+ ADD_LIBRARY(sisl ${sisl_SRCS})
+ SET_PROPERTY(TARGET sisl
+   PROPERTY FOLDER "sisl/Libs")
++set_target_properties(sisl PROPERTIES VERSION 4.6.0 SOVERSION 4.6)
+ 
+ # This line may be needed only on AMD 64 bit...
+ #IF(NOT WIN32)
+-- 
+1.9.1
+
