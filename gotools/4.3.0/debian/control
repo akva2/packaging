@@ -1,0 +1,161 @@
+Source: gotools
+Priority: extra
+Maintainer: Arne Morten Kvarving <arne.morten.kvarving@sintef.no>
+Build-Depends: debhelper (>= 8.0.0), cmake, libnewmat10-dev, libsisl-dev, libttl-dev
+Standards-Version: 3.9.2
+Section: libs
+Homepage: http://www.sintef.no/Projectweb/Geometry-Toolkits/GoTools/
+
+Package: libgotools-compositemodel-dev
+Section: libdevel
+Architecture: any
+Depends: libgotools-compositemodel1 (= ${binary:Version})
+Description: The gotools-compositemodel library -- development files
+ bla bla
+
+Package: libgotools-compositemodel1
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: The gotools-compositemodel library
+ bla bla
+
+Package: libgotools-core-dev
+Section: libdevel
+Architecture: any
+Depends: libgotools-core1 (= ${binary:Version})
+Description: The TTL library -- development files
+ bla bla
+
+Package: libgotools-core1
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: The gotools-core library
+ bla bla
+
+Package: libgotools-igeslib-dev
+Section: libdevel
+Architecture: any
+Depends: libgotools-igeslib1 (= ${binary:Version})
+Description: The gotools-igeslib library -- development files
+ bla bla
+
+Package: libgotools-igeslib1
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: The gotools-igeslib library
+ bla bla
+
+Package: libgotools-implicitization-dev
+Section: libdevel
+Architecture: any
+Depends: libgotools-implicitization1 (= ${binary:Version})
+Description: The gotools-implicitization library -- development files
+ bla bla
+
+Package: libgotools-implicitization1
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: The gotools-implicitization library
+ bla bla
+
+Package: libgotools-intersections-dev
+Section: libdevel
+Architecture: any
+Depends: libgotools-intersections1 (= ${binary:Version})
+Description: The gotools-intersections library -- development files
+ bla bla
+
+Package: libgotools-intersections1
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: The gotools-intersections library
+ bla bla
+
+Package: libgotools-isogeometricmodel-dev
+Section: libdevel
+Architecture: any
+Depends: libgotools-isogeometricmodel1 (= ${binary:Version})
+Description: The gotools-isogeometricmodel library -- development files
+ bla bla
+
+Package: libgotools-isogeometricmodel1
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: The gotools-isogeometricmodel library
+ bla bla
+
+Package: libgotools-qualitymodule-dev
+Section: libdevel
+Architecture: any
+Depends: libgotools-qualitymodule1 (= ${binary:Version})
+Description: The gotools-qualitymodule library -- development files
+ bla bla
+
+Package: libgotools-qualitymodule1
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: The gotools-qualitymodule library
+ bla bla
+
+Package: libgotools-parametrization-dev
+Section: libdevel
+Architecture: any
+Depends: libgotools-parametrization1 (= ${binary:Version})
+Description: The gotools-parametrization library -- development files
+ bla bla
+
+Package: libgotools-parametrization1
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: The gotools-parametrization library
+ bla bla
+
+Package: libgotools-topology-dev
+Section: libdevel
+Architecture: any
+Depends: libgotools-topology1 (= ${binary:Version})
+Description: The gotools-topology library -- development files
+ bla bla
+
+Package: libgotools-topology1
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: The gotools-trivariatemodel library
+ bla bla
+
+Package: libgotools-trivariate-dev
+Section: libdevel
+Architecture: any
+Depends: libgotools-trivariate1 (= ${binary:Version})
+Description: The gotools-trivariate library -- development files
+ bla bla
+
+Package: libgotools-trivariate1
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: The gotools-trivariate library
+ bla bla
+
+Package: libgotools-trivariatemodel-dev
+Section: libdevel
+Architecture: any
+Depends: libgotools-trivariatemodel1 (= ${binary:Version})
+Description: The gotools-trivariatemodel library -- development files
+ bla bla
+
+Package: libgotools-trivariatemodel1
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: The gotools-trivariatemodel library
+ bla bla

@@ -1,0 +1,81 @@
+From b808471563fce6a595f6628aa6de7dc5ed39b18f Mon Sep 17 00:00:00 2001
+From: Arne Morten Kvarving <arne.morten.kvarving@sintef.no>
+Date: Tue, 21 Apr 2015 14:49:59 +0200
+Subject: [PATCH 4/4] use system-provided sisl library
+
+---
+ CMakeLists.txt |  6 ++++--
+ FindSISL.cmake | 38 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 42 insertions(+), 2 deletions(-)
+ create mode 100644 FindSISL.cmake
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index c3ddd4e..21dbd3e 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -105,14 +105,16 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}
+                       ${CMAKE_SOURCE_DIR})
+ find_package(Newmat REQUIRED)
+ find_package(TTL REQUIRED)
++find_package(SISL REQUIRED)
+ 
+ #ADD_SUBDIRECTORY(newmat)
+-ADD_SUBDIRECTORY(sisl)
++#ADD_SUBDIRECTORY(sisl)
+ #ADD_SUBDIRECTORY(ttl)
+ SET(GoTools_COMMON_INCLUDE_DIRS
+   ${Newmat_INCLUDE_DIRS}
+   #  ${newmat_SOURCE_DIR}/include
+-  ${sisl_SOURCE_DIR}/include
++  ${SISL_INCLUDE_DIRS}
++  #${sisl_SOURCE_DIR}/include
+   #${ttl_SOURCE_DIR}/include
+   ${TTL_INCLUDE_DIRS}
+   ${GoTools_COMMON_INCLUDE_DIRS} 
+diff --git a/FindSISL.cmake b/FindSISL.cmake
+new file mode 100644
+index 0000000..1129fb1
+--- /dev/null
++++ b/FindSISL.cmake
+@@ -0,0 +1,38 @@
++# - Tries to find the SISL library
++#
++# Written by: jan.b.thomassen@sintef.no
++#
++
++# 'GoTools_BUILD_ALL' will be defined in the top-level CMakeLists.txt
++# file if we are building all of GoTools in one project.
++IF(GoTools_BUILD_ALL)
++  # Header files
++  SET(SISL_INCLUDE_DIRS ${sisl_SOURCE_DIR}/include
++    CACHE PATH "Path to SISL header files")
++  # Library
++  SET(SISL_LIBRARIES sisl
++    CACHE FILE "SISL library")
++ENDIF(GoTools_BUILD_ALL)
++
++# Find header files
++FIND_PATH(SISL_INCLUDE_DIRS "sisl.h"
++  "$ENV{HOME}/include"
++  "$ENV{HOME}/install/include"
++  "C:/Program Files (x86)/sisl/include"
++  "$ENV{PROGRAMFILES}/SINTEF/sisl/include"
++)
++
++# Find library
++FIND_LIBRARY(SISL_LIBRARIES
++  NAMES sisl 
++  PATHS "$ENV{HOME}/lib"
++  "$ENV{HOME}/install/lib"
++  "C:/Program Files (x86)/sisl/lib"
++  "$ENV{PROGRAMFILES}/SINTEF/sisl/lib"
++)
++
++# Check that we have found everything
++SET(SISL_FOUND FALSE)
++IF(SISL_INCLUDE_DIRS AND SISL_LIBRARIES)
++  SET(SISL_FOUND TRUE)
++ENDIF(SISL_INCLUDE_DIRS AND SISL_LIBRARIES)
+-- 
+1.9.1
+

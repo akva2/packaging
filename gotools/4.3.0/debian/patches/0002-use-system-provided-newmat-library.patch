@@ -1,0 +1,85 @@
+From 63be7a1ca39023df3d278b8fcb1552e3a4f13991 Mon Sep 17 00:00:00 2001
+From: Arne Morten Kvarving <arne.morten.kvarving@sintef.no>
+Date: Tue, 21 Apr 2015 13:20:29 +0200
+Subject: [PATCH 2/2] use system-provided newmat library
+
+---
+ CMakeLists.txt   |  9 +++++++--
+ FindNewmat.cmake | 42 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 49 insertions(+), 2 deletions(-)
+ create mode 100644 FindNewmat.cmake
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index dfe0a86..60db059 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -101,11 +101,16 @@ ENDIF(Boost_FOUND)
+ 
+ # Comment out the modules you don't want to build
+ 
+-ADD_SUBDIRECTORY(newmat)
++set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}
++                      ${CMAKE_SOURCE_DIR})
++find_package(Newmat REQUIRED)
++
++#ADD_SUBDIRECTORY(newmat)
+ ADD_SUBDIRECTORY(sisl)
+ ADD_SUBDIRECTORY(ttl)
+ SET(GoTools_COMMON_INCLUDE_DIRS
+-  ${newmat_SOURCE_DIR}/include
++  ${Newmat_INCLUDE_DIRS}
++  #  ${newmat_SOURCE_DIR}/include
+   ${sisl_SOURCE_DIR}/include
+   ${ttl_SOURCE_DIR}/include
+   ${GoTools_COMMON_INCLUDE_DIRS} 
+diff --git a/FindNewmat.cmake b/FindNewmat.cmake
+new file mode 100644
+index 0000000..287ebb5
+--- /dev/null
++++ b/FindNewmat.cmake
+@@ -0,0 +1,42 @@
++# - Tries to find the Newmat library
++#
++# Written by: jan.b.thomassen@sintef.no
++#
++
++
++# 'GoTools_BUILD_ALL' will be defined in the top-level CMakeLists.txt
++# file if we are building all of GoTools in one project.
++IF(GoTools_BUILD_ALL)
++  # Header files
++  SET(Newmat_INCLUDE_DIRS ${newmat_SOURCE_DIR}/include
++    CACHE PATH "Path to Newmat header files")
++  # Library
++  SET(Newmat_LIBRARIES newmat
++    CACHE FILE "Newamt library")
++ENDIF(GoTools_BUILD_ALL)
++
++
++# Find header files
++FIND_PATH(Newmat_INCLUDE_DIRS "newmat.h"
++  "/usr/include/newmat"
++  "/usr/local/include/newmat"
++  "$ENV{HOME}/include/newmat"
++  "$ENV{HOME}/install/include/newmat"
++  "$ENV{PROGRAMFILES}/newmat/include/newmat"
++  "$ENV{PROGRAMFILES}/SINTEF/newmat/include/newmat"
++)
++
++# Find library
++FIND_LIBRARY(Newmat_LIBRARIES
++  NAMES newmat
++  PATHS "$ENV{HOME}/lib"
++  "$ENV{HOME}/install/lib"
++  "$ENV{PROGRAMFILES}/newmat/lib"
++  "$ENV{PROGRAMFILES}/SINTEF/newmat/lib"
++)
++
++# Check that we have found everything
++SET(Newmat_FOUND FALSE)
++IF(Newmat_INCLUDE_DIRS AND Newmat_LIBRARIES)
++  SET(Newmat_FOUND TRUE)
++ENDIF(Newmat_INCLUDE_DIRS AND Newmat_LIBRARIES)
+-- 
+1.9.1
+

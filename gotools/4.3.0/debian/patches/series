@@ -1,0 +1,4 @@
+0001-fixed-forgotten-weights-in-SplineCurve-computeBasis-.patch
+0002-use-system-provided-newmat-library.patch
+0003-use-system-provided-ttl-library.patch
+0004-use-system-provided-sisl-library.patch
