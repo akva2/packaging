@@ -1,0 +1,13 @@
+Source: bsgui
+Section: science
+Priority: optional
+Maintainer: Arne Morten Kvarving <arne.morten.kvarving@sintef.no>
+Build-Depends: debhelper (>= 8.0.0), cmake, qt5-default, libqt5opengl5-dev,
+               libgotools-core-dev, libgotools-trivariate-dev, libifem-cmakerules
+Standards-Version: 3.9.4
+Homepage: https://github.com/TheBB/BSGUI
+
+Package: bsgui
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: BSGUI is a spline visualizer
