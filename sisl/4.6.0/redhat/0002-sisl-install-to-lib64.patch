@@ -1,0 +1,25 @@
+From 8f82e23371ac9d60c6f6ed02088db5354c638915 Mon Sep 17 00:00:00 2001
+From: - <akva@localhost.localdomain>
+Date: Wed, 24 Jun 2015 13:47:29 +0200
+Subject: [PATCH] install to lib64
+
+---
+ CMakeLists.txt |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 47643a0..45edee0 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -67,7 +67,7 @@ IF(WIN32)
+ ELSE(WIN32)
+   # Linux
+   # lib
+-  INSTALL(TARGETS sisl DESTINATION lib COMPONENT sisl)
++  INSTALL(TARGETS sisl DESTINATION lib64 COMPONENT sisl)
+   # include
+   INSTALL(DIRECTORY include/
+     COMPONENT sisl-dev
+-- 
+1.7.1
+
