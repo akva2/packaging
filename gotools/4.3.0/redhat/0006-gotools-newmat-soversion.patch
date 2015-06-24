@@ -1,0 +1,24 @@
+From 966b2cd410e10333d7da30cd99d783eb029b10d9 Mon Sep 17 00:00:00 2001
+From: - <akva@localhost.localdomain>
+Date: Wed, 24 Jun 2015 14:52:54 +0200
+Subject: [PATCH] add soversion for newmat
+
+---
+ newmat/CMakeLists.txt |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/newmat/CMakeLists.txt b/newmat/CMakeLists.txt
+index 64899e0..745130f 100644
+--- a/newmat/CMakeLists.txt
++++ b/newmat/CMakeLists.txt
+@@ -14,6 +14,7 @@ FILE(GLOB_RECURSE newmat_SRCS src/*.cpp include/*.h)
+ ADD_LIBRARY(newmat ${newmat_SRCS})
+ SET_PROPERTY(TARGET newmat
+   PROPERTY FOLDER "newmat/Libs")
++SET_TARGET_PROPERTIES(newmat PROPERTIES SOVERSION ${GoTools_ABI_VERSION})
+ 
+ 
+ # Apps, examples, tests, ...?
+-- 
+1.7.1
+

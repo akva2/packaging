@@ -1,0 +1,193 @@
+From fde54b4bf0dac288c66dc321bf560078ae869b72 Mon Sep 17 00:00:00 2001
+From: Arne Morten Kvarving <arne.morten.kvarving@sintef.no>
+Date: Thu, 7 May 2015 13:03:08 +0200
+Subject: [PATCH] added: ability to evaluate N uni-directional derivatives
+
+---
+ .../include/GoTools/geometry/SplineSurface.h       | 51 +++++++++++++-
+ gotools-core/src/geometry/GSSpoint.C               | 79 ++++++++++++++++++++++
+ 2 files changed, 129 insertions(+), 1 deletion(-)
+
+diff --git a/gotools-core/include/GoTools/geometry/SplineSurface.h b/gotools-core/include/GoTools/geometry/SplineSurface.h
+index 8eaa2b1..ffd3a2f 100644
+--- a/gotools-core/include/GoTools/geometry/SplineSurface.h
++++ b/gotools-core/include/GoTools/geometry/SplineSurface.h
+@@ -148,6 +148,42 @@ struct BasisDerivsSf2
+ 	}
+ };
+ 
++/// Structure for storage of results of grid evaluation of the basis function of a spline surface.
++/// Position, and a given number of uni-directed derivatives
++struct BasisDerivsSfU
++{
++  size_t derivs;
++  /// Parameter double in which the basis functions are evaluated
++  double param[2];
++  /// Index of the knot interval where the parameter value is situated for all
++  /// parameter directions. The indices of the non-zero basis functions are
++  /// left_idx[i]-order[i]+1, ..., left_idx[i] for i=0,1
++  int left_idx[2];
++
++  /// The value of all basis functions and derivatives
++  std::vector< std::vector<double> > values;
++
++  /// Resize data structures
++  /// \param u u parameter
++  /// \param u v parameter
++  /// \param idx_u u index
++  /// \param idx_u v index
++  /// \param deriv Number of derivatives
++  /// \param size Number of functions
++  void prepareDerivs(double u, double v, int idx_u, int idx_v,
++		      size_t deriv, size_t size)
++  {
++    derivs = deriv;
++    param[0] = u;
++    param[1] = v;
++    left_idx[0] = idx_u;
++    left_idx[1] = idx_v;
++    values.resize(size);
++    for (size_t i=0;i<size;++i)
++      values[i].resize(2*derivs+1);
++  }
++};
++
+ /// \brief SplineSurface provides methodes for storing,
+ /// reading and manipulating rational and non-rational
+ /// B-spline surfaces.
+@@ -344,7 +380,7 @@ class GO_API SplineSurface : public ParamSurface
+     // inherited from ParamSurface
+     virtual void point(std::vector<Point>& pts, 
+ 		       double upar, double vpar,
+-		       int derivs,
++                       int derivs,
+ 		       bool u_from_right = true,
+ 		       bool v_from_right = true,
+ 		       double resolution = 1.0e-12) const;
+@@ -1100,6 +1136,14 @@ class GO_API SplineSurface : public ParamSurface
+ 		      BasisDerivsSf& result,
+ 		      bool evaluate_from_right = true) const;
+ 
++    /// Compute basis values (position and uni-directed derivatives) in the parameter 
++    /// (param_u,param_v). Store result in a BasisDerivsSfU entity
++    void computeBasis(double param_u,
++		      double param_v,
++                      int derivs,
++		      BasisDerivsSfU& result,
++		      bool evaluate_from_right = true) const;
++
+     /// Compute basis values (position and 1. and 2. derivatives) in the parameter 
+     /// (param_u,param_v). Store result in a BasisDerivSf2 entity
+      void computeBasis(double param_u,
+@@ -1316,6 +1360,11 @@ class GO_API SplineSurface : public ParamSurface
+ 			 std::vector<double>& basisDerivs_uv,
+ 			 std::vector<double>& basisDerivs_vv) const;
+ 
++    void accumulateBasis(const std::vector<double>& basisvals_u,
++			 const std::vector<double>& basisvals_v,
++			 const std::vector<double>& weights,
++                         BasisDerivsSfU& output) const;
++
+     // Actually computes the closest point. Only difference is the explicit
+     // robust_seedfind-parameter, which is always true in the virtual
+     // closestPoint() function, when that function calls closestPointImpl().
+diff --git a/gotools-core/src/geometry/GSSpoint.C b/gotools-core/src/geometry/GSSpoint.C
+index b396ce3..4e6a67a 100644
+--- a/gotools-core/src/geometry/GSSpoint.C
++++ b/gotools-core/src/geometry/GSSpoint.C
+@@ -1327,6 +1327,55 @@ void SplineSurface::computeBasis(double param_u,
+ 		  result.basisDerivs_uu, result.basisDerivs_uv, result.basisDerivs_vv);
+ }
+ 
++
++//===========================================================================
++void SplineSurface::computeBasis(double param_u,
++				 double param_v,
++                                 int derivs,
++				 BasisDerivsSfU& result,
++				 bool evaluate_from_right) const
++//===========================================================================
++{
++  int uorder = basis_u_.order();
++  int vorder = basis_v_.order();
++  int nn1 = basis_u_.numCoefs();
++  vector<double> basisvals_u(uorder * (derivs + 1));
++  vector<double> basisvals_v(vorder * (derivs + 1));
++
++  // Compute basis values
++  if (evaluate_from_right)
++    {
++      basis_u_.computeBasisValues(param_u, &basisvals_u[0], derivs);
++      basis_v_.computeBasisValues(param_v, &basisvals_v[0], derivs);
++    }
++  else
++    {
++      basis_u_.computeBasisValuesLeft(param_u, &basisvals_u[0], derivs);
++      basis_v_.computeBasisValuesLeft(param_v, &basisvals_v[0], derivs);
++    }
++
++  int ulast = basis_u_.lastKnotInterval();
++  int vlast = basis_v_.lastKnotInterval();
++  result.prepareDerivs(param_u, param_v, ulast, vlast,
++		       derivs, uorder*vorder);
++
++  vector<double> weights;
++  if (rational_)
++    {
++      // Collect relevant weights
++      int kr, ki, kj;
++      int kdim = dim_ + 1;
++      int uleft = ulast - uorder + 1;
++      int vleft = vlast - vorder + 1;
++      weights.resize(uorder*vorder);
++      for (kj=vleft, kr=0; kj<vleft+vorder; ++kj)
++	for (ki=uleft; ki<uleft+uorder; ++ki)
++	  weights[kr++] = rcoefs_[(kj*nn1+ki)*kdim+dim_];
++    }
++
++  accumulateBasis(basisvals_u, basisvals_v, weights, result);
++}
++
+ //===========================================================================
+ void SplineSurface::computeBasisGrid(const Dvector& param_u,
+ 				     const Dvector& param_v,
+@@ -1724,6 +1773,36 @@ void SplineSurface::accumulateBasis(const vector<double>::const_iterator& basisv
+ }
+ 
+ 
++void SplineSurface::accumulateBasis(const vector<double>& basisvals_u,
++				    const vector<double>& basisvals_v,
++				    const vector<double>& weights,
++                                    BasisDerivsSfU& output) const
++{
++  int ki, kj, kr;
++  int uorder = basis_u_.order();
++  int vorder = basis_v_.order();
++  if (rational_)
++  {
++    std::cerr << "Not implemented for rationals!" << std::endl;
++    ASSERT(0);
++  }
++  else
++  {
++    // Multiply basis values in the two parameter directions
++    int nperfunc = output.derivs+1;
++    for (kj=0, kr=0; kj<vorder; ++kj)
++      for (ki=0; ki<uorder; ++ki, ++kr)
++      {
++        output.values[kr][0] = basisvals_u[ki*nperfunc]*basisvals_v[kj*nperfunc];
++        for (size_t i=0;i<output.derivs;++i) {
++          output.values[kr][2*i+1] = basisvals_u[ki*nperfunc+i+1]*basisvals_v[kj*nperfunc];
++          output.values[kr][2*i+2] = basisvals_u[ki*nperfunc]*basisvals_v[kj*nperfunc+i+1];
++        }
++      }
++  }
++}
++
++
+ } // namespace Go
+ 
+ 
+-- 
+1.9.1
+
