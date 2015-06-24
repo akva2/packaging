@@ -1,0 +1,25 @@
+From 5cdc6757b18087b56d0d29e3517d2312ac77d750 Mon Sep 17 00:00:00 2001
+From: - <akva@localhost.localdomain>
+Date: Wed, 24 Jun 2015 13:43:59 +0200
+Subject: [PATCH] install to lib64
+
+---
+ CMakeLists.txt |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 23ec28b..2204322 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -72,7 +72,7 @@ IF(WIN32)
+ ELSE(WIN32)
+   # Linux
+   # lib
+-  INSTALL(TARGETS ttl DESTINATION lib COMPONENT ttl)
++  INSTALL(TARGETS ttl DESTINATION lib64 COMPONENT ttl)
+   # include
+   INSTALL(DIRECTORY include/ttl
+     COMPONENT ttl-dev
+-- 
+1.7.1
+
