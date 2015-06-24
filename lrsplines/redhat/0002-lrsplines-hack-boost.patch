@@ -1,0 +1,25 @@
+From c7b86203ccb71c23113210a073ef5b1a40c07445 Mon Sep 17 00:00:00 2001
+From: - <akva@localhost.localdomain>
+Date: Wed, 24 Jun 2015 16:23:33 +0200
+Subject: [PATCH] hack boost includes
+
+---
+ CMakeLists.txt |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index a6a0989..d760f40 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -84,7 +84,7 @@ ENDIF()
+ 
+ IF(Boost_FOUND)
+   SET(DEPLIBS  ${DEPLIBS}  ${BOOST_LIBRARIES})
+-  SET(INCLUDES ${INCLUDES} ${BOOST_INCLUDES} )
++  SET(INCLUDES ${INCLUDES} ${BOOST_INCLUDEDIR} )
+   OPTION(HAS_BOOST "Link library with Boost" ON)
+   ADD_DEFINITIONS(-DHAS_BOOST)
+ ELSE(Boost_FOUND)
+-- 
+1.7.1
+

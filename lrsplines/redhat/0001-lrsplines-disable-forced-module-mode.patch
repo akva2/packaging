@@ -1,0 +1,25 @@
+From ba7cae80d651a775d2f6d020091faae475caecb4 Mon Sep 17 00:00:00 2001
+From: - <akva@localhost.localdomain>
+Date: Wed, 24 Jun 2015 16:06:32 +0200
+Subject: [PATCH] disable forcing of module mode
+
+---
+ CMakeLists.txt |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 6f82bc1..a6a0989 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -64,7 +64,7 @@ SET(INCLUDES ${PROJECT_SOURCE_DIR}/include ${CMAKE_BINARY_DIR}/include)
+ 
+ # Optional packages
+ FIND_PACKAGE(Boost)
+-FIND_PACKAGE(GoTools MODULE)
++FIND_PACKAGE(GoTools)
+ 
+ IF(GoTools_FOUND)
+   # must have all of GoTools or none of it
+-- 
+1.7.1
+
