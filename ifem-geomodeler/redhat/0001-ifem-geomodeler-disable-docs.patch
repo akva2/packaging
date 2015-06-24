@@ -1,0 +1,25 @@
+From 86e5f5edbcbb051021a65d30891ddfffe0bddd3a Mon Sep 17 00:00:00 2001
+From: - <akva@localhost.localdomain>
+Date: Wed, 24 Jun 2015 16:15:40 +0200
+Subject: [PATCH] disable docs
+
+---
+ CMakeLists.txt |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 8b5acea..5c4cf19 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -165,7 +165,7 @@ set_directory_properties(${PROJECT_SOURCE_DIR}/doc ADDITIONAL_MAKE_CLEAN_DIRECTO
+ 
+ # 'install' target
+ # Make install force doc build
+-if(EPYDOC_EXECUTABLE)
++if(0)#EPYDOC_EXECUTABLE)
+   install(CODE "EXECUTE_PROCESS(COMMAND ${CMAKE_BUILD_TOOL} doc WORKING_DIRECTORY \"${CMAKE_CURRENT_BINARY_DIR}\")" COMPONENT doc)
+   install(DIRECTORY ${PROJECT_SOURCE_DIR}/doc/html DESTINATION share/doc/python-GoTools
+           COMPONENT doc)
+-- 
+1.7.1
+
