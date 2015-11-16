@@ -1,0 +1,12 @@
+--- opennurbs_2011.11.22/opennurbs_array_defs.orig.h	2015-11-16 10:21:51.965665494 +0100
++++ opennurbs_2011.11.22/opennurbs_array_defs.h	2015-11-16 10:22:14.413665054 +0100
+@@ -49,6 +49,9 @@
+ // should include opennurbs_array.h and let it take care of
+ // including this file.
+ 
++
++#include "opennurbs_math.h"
++
+ /////////////////////////////////////////////////////////////////////////////////////
+ //  Class ON_SimpleArray<>
+ /////////////////////////////////////////////////////////////////////////////////////

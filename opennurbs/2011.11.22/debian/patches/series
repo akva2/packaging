@@ -1,0 +1,5 @@
+01_add_cmake_buildsystem.patch
+02_add_multiarch_support.patch
+03_use_system_zlib.patch
+04_include_for_sort.patch
+05_forward_sphere.patch

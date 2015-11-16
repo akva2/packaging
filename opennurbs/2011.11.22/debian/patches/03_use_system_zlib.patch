@@ -1,0 +1,147 @@
+--- opennurbs_20111122/opennurbs_zlib.orig.cpp	2011-11-22 09:51:34.000000000 +0100
++++ opennurbs_20111122/opennurbs_zlib.cpp	2013-04-10 15:07:17.786362055 +0200
+@@ -289,7 +289,7 @@
+       // no uncompressed input is left - switch to finish mode
+       flush = Z_FINISH;
+     }
+-    zrc = z_deflate( &m_zlib.strm, flush ); 
++    zrc = deflate( &m_zlib.strm, flush ); 
+     if ( zrc < 0 ) 
+     {
+       // Something went haywire - bail out.
+@@ -487,7 +487,7 @@
+       // no compressed input is left - switch to finish mode
+       flush = Z_FINISH;
+     }
+-    zrc = z_inflate( &m_zlib.strm, flush );
++    zrc = inflate( &m_zlib.strm, flush );
+     if ( zrc < 0 ) 
+     {
+       // Something went haywire - bail out.
+@@ -1147,7 +1147,7 @@
+       // no uncompressed input is left - switch to finish mode
+       flush = Z_FINISH;
+     }
+-    zrc = z_deflate( &m_zlib.strm, flush ); 
++    zrc = deflate( &m_zlib.strm, flush ); 
+     if ( zrc < 0 ) 
+     {
+       // Something went haywire - bail out.
+@@ -1280,7 +1280,7 @@
+       // no compressed input is left - switch to finish mode
+       flush = Z_FINISH;
+     }
+-    zrc = z_inflate( &m_zlib.strm, flush );
++    zrc = inflate( &m_zlib.strm, flush );
+     if ( zrc < 0 ) 
+     {
+       // Something went haywire - bail out.
+--- opennurbs_20111122/opennurbs_compress.orig.cpp	2011-11-22 09:51:38.000000000 +0100
++++ opennurbs_20111122/opennurbs_compress.cpp	2013-04-10 15:06:02.050360327 +0200
+@@ -121,7 +121,7 @@
+     // compressed output in m_zlib.strm.next_out[], or do both.
+ 
+     // provide storage for compressed stream output
+-    strm.next_out  = (z_Bytef*)out_buffer;
++    strm.next_out  = (Bytef*)out_buffer;
+     strm.avail_out = sizeof_out_buffer;
+ 
+     if ( strm.avail_in <= 0 )
+@@ -135,7 +135,7 @@
+       ON__UINT64 sz = (size > max_sz) ? max_sz : size;
+       m_in_size += sz;
+       m_in_crc = ON_CRC32(m_in_crc,(size_t)sz,uncompressed_buffer); // (size_t) cast is safe because sz <= max_sz = 0x7FFFFFF0
+-      strm.next_in = (z_Bytef*)uncompressed_buffer;
++      strm.next_in = (Bytef*)uncompressed_buffer;
+       strm.avail_in = (ON__UINT32)sz;
+       uncompressed_buffer = ((const unsigned char*)uncompressed_buffer) + sz;
+       size -= sz;
+@@ -145,7 +145,7 @@
+     // calculate compression
+     ON__UINT32 avail_in0 = strm.avail_in;
+     ON__UINT32 avail_out0 = strm.avail_out;
+-    zrc = z_deflate( &strm, Z_NO_FLUSH ); 
++    zrc = deflate( &strm, Z_NO_FLUSH ); 
+     if ( zrc < 0 ) 
+     {
+       // Something went haywire - bail out.
+@@ -228,11 +228,11 @@
+     // provide storage for compressed stream output
+     strm.avail_in = 0;
+     strm.next_in = 0;
+-    strm.next_out  = (z_Bytef*)out_buffer;
++    strm.next_out  = (Bytef*)out_buffer;
+     strm.avail_out = sizeof_out_buffer;
+ 
+     // finish compression calculation
+-    zrc = z_deflate( &strm, Z_FINISH ); 
++    zrc = deflate( &strm, Z_FINISH ); 
+     if ( zrc < 0 ) 
+     {
+       // Something went haywire - bail out.
+@@ -439,7 +439,7 @@
+     // uncompressed output in strm.next_out[], or do both.
+ 
+     // provide storage for uncompressed stream output
+-    strm.next_out  = (z_Bytef*)out_buffer;
++    strm.next_out  = (Bytef*)out_buffer;
+     strm.avail_out = sizeof_out_buffer;
+ 
+     if ( strm.avail_in <= 0 )
+@@ -453,7 +453,7 @@
+       ON__UINT64 sz = (size > max_sz) ? max_sz : size;
+       m_in_size += sz;
+       m_in_crc = ON_CRC32(m_in_crc,(size_t)sz,compressed_buffer); // (size_t) cast is safe because sz <= max_sz = 0x7FFFFFF0
+-      strm.next_in = (z_Bytef*)compressed_buffer;
++      strm.next_in = (Bytef*)compressed_buffer;
+       strm.avail_in = (ON__UINT32)sz;
+       compressed_buffer = ((const unsigned char*)compressed_buffer) + sz;
+       size -= sz;
+@@ -463,7 +463,7 @@
+     // calculate compression
+     ON__UINT32 avail_in0 = strm.avail_in;
+     ON__UINT32 avail_out0 = strm.avail_out;
+-    zrc = z_inflate( &strm, Z_NO_FLUSH ); 
++    zrc = inflate( &strm, Z_NO_FLUSH ); 
+     if ( zrc < 0 ) 
+     {
+       // Something went haywire - bail out.
+@@ -546,11 +546,11 @@
+     // provide storage for compressed stream output
+     strm.avail_in = 0;
+     strm.next_in = 0;
+-    strm.next_out  = (z_Bytef*)out_buffer;
++    strm.next_out  = (Bytef*)out_buffer;
+     strm.avail_out = sizeof_out_buffer;
+ 
+     // finish compression calculation
+-    zrc = z_inflate( &strm, Z_FINISH ); 
++    zrc = inflate( &strm, Z_FINISH ); 
+     if ( zrc < 0 ) 
+     {
+       // Something went haywire - bail out.
+--- opennurbs_20111122/opennurbs_zlib.orig.h	2011-11-22 09:51:34.000000000 +0100
++++ opennurbs_20111122/opennurbs_zlib.h	2013-04-10 15:04:23.138358070 +0200
+@@ -29,17 +29,17 @@
+ // header files are included by opennurbs.h.
+ 
+ 
+-#if !defined(Z_PREFIX)
+-/* decorates zlib functions with a "z_" prefix to prevent symbol collision. */
+-#define Z_PREFIX
+-#endif
++//#if !defined(Z_PREFIX)
++///* decorates zlib functions with a "z_" prefix to prevent symbol collision. */
++//#define Z_PREFIX
++//#endif
+ 
+ #if !defined(MY_ZCALLOC)
+ /* have zlib use oncalloc() and onfree() for memory managment*/
+ #define MY_ZCALLOC
+ #endif
+ 
+-#include "./zlib/zlib.h"
++#include <zlib.h>
+ 
+ ON_BEGIN_EXTERNC
+ voidpf zcalloc (voidpf, unsigned, unsigned);

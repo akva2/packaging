@@ -1,0 +1,40 @@
+Source: opennurbs
+Priority: extra
+Maintainer: Arne Morten Kvarving <arne.morten.kvarving@sintef.no>
+Build-Depends: debhelper (>= 8.0.0), cmake, zlib1g-dev
+Standards-Version: 3.9.2
+Section: libs
+Homepage: http://www.opennurbs.org/
+
+Package: libopennurbs1-dev
+Section: libdevel
+Architecture: any
+Multi-Arch: foreign
+Depends: libopennurbs1 (= ${binary:Version})
+Provides: libopennurbs-dev
+Description: libopennurbs - a spline geometry conversion library -- development files
+ The openNURBS Initiative provides CAD, CAM, CAE, and computer graphics
+ software developers the tools to accurately transfer 3-D geometry between
+ applications.
+
+Package: libopennurbs1
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Provides: libopennurbs
+Multi-Arch: same
+Description: libopennurbs - a spline geometry conversion library
+ The openNURBS Initiative provides CAD, CAM, CAE, and computer graphics
+ software developers the tools to accurately transfer 3-D geometry between
+ applications.
+
+Package: libopennurbs1-dbg
+Section: debug
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Provides: libopennurbs-dbg
+Multi-Arch: same
+Description: libopennurbs - a spline geometry conversion library -- debug symbols
+ The openNURBS Initiative provides CAD, CAM, CAE, and computer graphics
+ software developers the tools to accurately transfer 3-D geometry between
+ applications.

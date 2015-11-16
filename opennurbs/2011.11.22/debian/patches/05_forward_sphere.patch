@@ -1,0 +1,12 @@
+--- opennurbs_2011.11.22/opennurbs_math.orig.h	2015-11-16 10:27:19.769659066 +0100
++++ opennurbs_2011.11.22/opennurbs_math.h	2015-11-16 10:27:01.701659421 +0100
+@@ -22,6 +22,9 @@
+ class ON_Line;
+ class ON_Arc;
+ class ON_Plane;
++class ON_Sphere;
++class ON_Circle;
++class ON_Cylinder;
+ 
+ /*
+ Description:

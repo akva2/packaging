@@ -1,0 +1,56 @@
+Format: http://dep.debian.net/deps/dep5
+Upstream-Name: opennurbs
+Source: <url://example.com>
+
+Files: *
+Copyright: 2011
+License:
+ The openNURBS Initiative provides CAD, CAM, CAE, and computer
+  graphics software developers the tools to accurately transfer
+  3-D geometry between applications.
+
+  The tools provided by openNURBS include:
+
+    * C++ source code libraries to read and write the file format.
+
+    * Quality assurance and revision control.
+
+    * Various supporting libraries and utilities.
+
+    * Technical support.
+
+  Unlike other open development initiatives, alliances, or
+  consortia:
+
+    * Commercial use is encouraged.
+
+    * The tools, support, and membership are free.
+
+    * There are no restrictions. Neither copyright nor copyleft
+          restrictions apply.
+
+    * No contribution of effort or technology is required from
+          the members, although it is encouraged.
+
+  For more information, please see <http://www.openNURBS.org>.
+
+# If you want to use GPL v2 or later for the /debian/* files use 
+# the following clauses, or change it to suit. Delete these two lines
+Files: debian/*
+Copyright: 2013 Arne Morten Kvarving <arne.morten.kvarving@sintef.no>
+License: GPL-2+
+ This package is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+ .
+ This package is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ .
+ You should have received a copy of the GNU General Public License
+ along with this program. If not, see <http://www.gnu.org/licenses/>
+ .
+ On Debian systems, the complete text of the GNU General
+ Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".
