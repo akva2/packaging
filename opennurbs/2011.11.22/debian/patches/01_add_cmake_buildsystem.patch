@@ -1,6 +1,6 @@
---- /dev/null	2013-04-09 09:48:26.058516370 +0200
-+++ opennurbs_20111122/CMakeLists.txt	2013-04-10 12:23:51.250138295 +0200
-@@ -0,0 +1,237 @@
+--- /dev/null	2015-11-19 14:59:48.339440003 +0100
++++ o2/CMakeLists.txt	2015-11-24 13:49:00.588568579 +0100
+@@ -0,0 +1,240 @@
 +PROJECT(libopenNURBS)
 +
 +CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
@@ -238,3 +238,13 @@
 +         opennurbs_zlib.h)
 +
 +INSTALL(FILES ${HDRS} DESTINATION include/libopennurbs COMPONENT dev)
++
++configure_file(OpenNURBSConfig.cmake.in OpenNURBSConfig.cmake @ONLY)
++install(FILES ${CMAKE_CURRENT_BINARY_DIR}/OpenNURBSConfig.cmake DESTINATION lib/OpenNURBS)
+--- /dev/null	2015-11-19 14:59:48.339440003 +0100
++++ o2/OpenNURBSConfig.cmake.in	2015-11-24 13:50:51.624569910 +0100
+@@ -0,0 +1,4 @@
++set(OpenNURBS_INCLUDE_DIRS @CMAKE_INSTALL_PREFIX@/include/libopennurbs)
++set(OpenNURBS_LIBRARIES -L@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_LIBDIR@ -lopenNURBS)
++set(OpenNURBS_VERSION_MAJOR 2011)
++set(OpenNURBS_VERSION_MINOR 11)
