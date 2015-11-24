@@ -1,3 +1,9 @@
+sisl (4.6.0-2~precise) precise; urgency=medium
+
+  * Add config mode
+
+ -- Arne Morten Kvarving <arne.morten.kvarving@sintef.no>  Tue, 24 Nov 2015 14:14:41 +0100
+
 sisl (4.6.0-1~precise) precise; urgency=low
 
   * Initial release
