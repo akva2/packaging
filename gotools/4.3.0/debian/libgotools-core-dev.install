@@ -3,3 +3,4 @@ usr/include/GoTools/geometry/*
 usr/include/GoTools/tesselator/*
 usr/include/GoTools/utils/*
 usr/lib/libGoToolsCore*.so
+usr/lib/GoTools/*

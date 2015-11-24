@@ -1,2 +1,3 @@
 usr/include/GoTools/compositemodel/*
 usr/lib/libGoCompositeModel.so
+usr/lib/GoCompositeModel/*

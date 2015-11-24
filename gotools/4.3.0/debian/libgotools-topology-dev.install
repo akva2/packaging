@@ -1,2 +1,3 @@
 usr/include/GoTools/topology/*
 usr/lib/libGoTopology.so
+usr/lib/GoTopology/*

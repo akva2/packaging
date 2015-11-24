@@ -1,2 +1,3 @@
 usr/include/GoTools/implicitization/*
 usr/lib/libGoImplicitization.so
+usr/lib/GoImplicitization/*

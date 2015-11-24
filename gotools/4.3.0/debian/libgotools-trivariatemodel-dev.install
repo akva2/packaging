@@ -1,2 +1,3 @@
 usr/include/GoTools/trivariatemodel/*
 usr/lib/libGoTrivariateModel.so
+usr/lib/GoTrivariateModel/*

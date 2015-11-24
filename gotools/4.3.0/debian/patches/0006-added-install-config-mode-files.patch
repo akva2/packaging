@@ -1,0 +1,286 @@
+From 9e744d53f0f3a2763130315f444c6ff9f830e2b6 Mon Sep 17 00:00:00 2001
+From: Arne Morten Kvarving <arne.morten.kvarving@sintef.no>
+Date: Tue, 24 Nov 2015 13:27:24 +0100
+Subject: [PATCH] added: install config mode files
+
+---
+ compositemodel/CMakeLists.txt                         | 3 +++
+ compositemodel/GoCompositeModelConfig.cmake.in        | 5 +++++
+ gotools-core/CMakeLists.txt                           | 3 +++
+ gotools-core/GoToolsConfig.cmake.in                   | 5 +++++
+ igeslib/CMakeLists.txt                                | 3 +++
+ igeslib/GoIgeslibConfig.cmake.in                      | 5 +++++
+ implicitization/CMakeLists.txt                        | 3 +++
+ implicitization/GoImplicitizationConfig.cmake.in      | 5 +++++
+ intersections/CMakeLists.txt                          | 3 +++
+ intersections/GoIntersectionsConfig.cmake.in          | 5 +++++
+ isogeometric_model/CMakeLists.txt                     | 3 +++
+ isogeometric_model/GoIsogeometricModelConfig.cmake.in | 5 +++++
+ parametrization/CMakeLists.txt                        | 3 +++
+ parametrization/parametrizationConfig.cmake.in        | 5 +++++
+ qualitymodule/CMakeLists.txt                          | 3 +++
+ qualitymodule/GoQualityModuleConfig.cmake.in          | 5 +++++
+ topology/CMakeLists.txt                               | 3 +++
+ topology/GoTopologyConfig.cmake.in                    | 5 +++++
+ trivariate/CMakeLists.txt                             | 3 +++
+ trivariate/GoTrivariateConfig.cmake.in                | 5 +++++
+ trivariatemodel/CMakeLists.txt                        | 3 +++
+ trivariatemodel/GoTrivariateModelConfig.cmake.in      | 5 +++++
+ 23 files changed, 89 insertions(+), 1 deletion(-)
+ create mode 100644 compositemodel/GoCompositeModelConfig.cmake.in
+ create mode 100644 gotools-core/GoToolsConfig.cmake.in
+ create mode 100644 igeslib/GoIgeslibConfig.cmake.in
+ create mode 100644 implicitization/GoImplicitizationConfig.cmake.in
+ create mode 100644 intersections/GoIntersectionsConfig.cmake.in
+ create mode 100644 isogeometric_model/GoIsogeometricModelConfig.cmake.in
+ create mode 100644 parametrization/parametrizationConfig.cmake.in
+ create mode 100644 qualitymodule/GoQualityModuleConfig.cmake.in
+ create mode 100644 topology/GoTopologyConfig.cmake.in
+ create mode 100644 trivariate/GoTrivariateConfig.cmake.in
+ create mode 100644 trivariatemodel/GoTrivariateModelConfig.cmake.in
+
+diff --git a/compositemodel/CMakeLists.txt b/compositemodel/CMakeLists.txt
+index d694941..03d0284 100644
+--- a/compositemodel/CMakeLists.txt
++++ b/compositemodel/CMakeLists.txt
+@@ -104,3 +104,6 @@ ELSE(WIN32)
+ ENDIF(WIN32)
+ 
+ SET(CPACK_STRIP_FILES ${CPACK_STRIP_FILES} libGoCompositeModel.so)
++
++configure_file(GoCompositeModelConfig.cmake.in GoCompositeModelConfig.cmake @ONLY)
++install(FILES ${CMAKE_CURRENT_BINARY_DIR}/GoCompositeModelConfig.cmake DESTINATION lib/GoCompositeModel)
+diff --git a/compositemodel/GoCompositeModelConfig.cmake.in b/compositemodel/GoCompositeModelConfig.cmake.in
+new file mode 100644
+index 0000000..e8ef928
+--- /dev/null
++++ b/compositemodel/GoCompositeModelConfig.cmake.in
+@@ -0,0 +1,5 @@
++set(GoCompositeModel_INCLUDE_DIRS @CMAKE_INSTALL_PREFIX@/include)
++set(GoCompositeModel_LIBRARIES -L@CMAKE_INSTALL_PREFIX@/lib -lGoCompositeModel)
++set(GoCompositeModel_VERSION_MAJOR @GoTools_VERSION_MAJOR@)
++set(GoCompositeModel_VERSION_MINOR @GoTools_VERSION_MINOR@)
++set(GoCompositeModel_VERSION_PATCH @GoTools_VERSION_PATCH@)
+diff --git a/gotools-core/CMakeLists.txt b/gotools-core/CMakeLists.txt
+index 778b89a..691d068 100644
+--- a/gotools-core/CMakeLists.txt
++++ b/gotools-core/CMakeLists.txt
+@@ -83,3 +83,6 @@ ELSE(WIN32)
+ ENDIF(WIN32)
+ 
+ SET(CPACK_STRIP_FILES ${CPACK_STRIP_FILES} libGoToolsCore.so)
++
++configure_file(GoToolsConfig.cmake.in GoToolsConfig.cmake @ONLY)
++install(FILES ${CMAKE_CURRENT_BINARY_DIR}/GoToolsConfig.cmake DESTINATION lib/GoTools)
+diff --git a/gotools-core/GoToolsConfig.cmake.in b/gotools-core/GoToolsConfig.cmake.in
+new file mode 100644
+index 0000000..7935f59
+--- /dev/null
++++ b/gotools-core/GoToolsConfig.cmake.in
+@@ -0,0 +1,5 @@
++set(GoTools_INCLUDE_DIRS @CMAKE_INSTALL_PREFIX@/include)
++set(GoTools_LIBRARIES -L@CMAKE_INSTALL_PREFIX@/lib -lGoToolsCore)
++set(GoTools_VERSION_MAJOR @GoTools_VERSION_MAJOR@)
++set(GoTools_VERSION_MINOR @GoTools_VERSION_MINOR@)
++set(GoTools_VERSION_PATCH @GoTools_VERSION_PATCH@)
+diff --git a/igeslib/CMakeLists.txt b/igeslib/CMakeLists.txt
+index ea62435..73cfcf6 100644
+--- a/igeslib/CMakeLists.txt
++++ b/igeslib/CMakeLists.txt
+@@ -70,3 +70,6 @@ ELSE(WIN32)
+ ENDIF(WIN32)
+ 
+ SET(CPACK_STRIP_FILES ${CPACK_STRIP_FILES} libGoIgeslib.so)
++
++configure_file(GoIgeslibConfig.cmake.in GoIgeslibConfig.cmake @ONLY)
++install(FILES ${CMAKE_CURRENT_BINARY_DIR}/GoIgeslibConfig.cmake DESTINATION lib/GoIgeslib)
+diff --git a/igeslib/GoIgeslibConfig.cmake.in b/igeslib/GoIgeslibConfig.cmake.in
+new file mode 100644
+index 0000000..599a2a4
+--- /dev/null
++++ b/igeslib/GoIgeslibConfig.cmake.in
+@@ -0,0 +1,5 @@
++set(GoIgeslib_INCLUDE_DIRS @CMAKE_INSTALL_PREFIX@/include)
++set(GoIgeslib_LIBRARIES -L@CMAKE_INSTALL_PREFIX@/lib -lGoIgeslib)
++set(GoIgeslib_VERSION_MAJOR @GoTools_VERSION_MAJOR@)
++set(GoIgeslib_VERSION_MINOR @GoTools_VERSION_MINOR@)
++set(GoIgeslib_VERSION_PATCH @GoTools_VERSION_PATCH@)
+diff --git a/implicitization/CMakeLists.txt b/implicitization/CMakeLists.txt
+index c904146..0d1231f 100644
+--- a/implicitization/CMakeLists.txt
++++ b/implicitization/CMakeLists.txt
+@@ -92,3 +92,6 @@ ELSE(WIN32)
+ ENDIF(WIN32)
+ 
+ SET(CPACK_STRIP_FILES ${CPACK_STRIP_FILES} libGoImplicitization.so)
++
++configure_file(GoImplicitizationConfig.cmake.in GoImplicitizationConfig.cmake @ONLY)
++install(FILES ${CMAKE_CURRENT_BINARY_DIR}/GoImplicitizationConfig.cmake DESTINATION lib/GoImplicitization)
+diff --git a/implicitization/GoImplicitizationConfig.cmake.in b/implicitization/GoImplicitizationConfig.cmake.in
+new file mode 100644
+index 0000000..ad6e89a
+--- /dev/null
++++ b/implicitization/GoImplicitizationConfig.cmake.in
+@@ -0,0 +1,5 @@
++set(GoImplicitization_INCLUDE_DIRS @CMAKE_INSTALL_PREFIX@/include)
++set(GoImplicitization_LIBRARIES -L@CMAKE_INSTALL_PREFIX@/lib -lGoImplicitization)
++set(GoImplicitization_VERSION_MAJOR @GoTools_VERSION_MAJOR@)
++set(GoImplicitization_VERSION_MINOR @GoTools_VERSION_MINOR@)
++set(GoImplicitization_VERSION_PATCH @GoTools_VERSION_PATCH@)
+diff --git a/intersections/CMakeLists.txt b/intersections/CMakeLists.txt
+index 89b1fa1..41f195b 100644
+--- a/intersections/CMakeLists.txt
++++ b/intersections/CMakeLists.txt
+@@ -74,3 +74,6 @@ ELSE(WIN32)
+ ENDIF(WIN32)
+ 
+ SET(CPACK_STRIP_FILES ${CPACK_STRIP_FILES} libGoIntersections.so)
++
++configure_file(GoIntersectionsConfig.cmake.in GoIntersectionsConfig.cmake @ONLY)
++install(FILES ${CMAKE_CURRENT_BINARY_DIR}/GoIntersectionsConfig.cmake DESTINATION lib/GoIntersections)
+diff --git a/intersections/GoIntersectionsConfig.cmake.in b/intersections/GoIntersectionsConfig.cmake.in
+new file mode 100644
+index 0000000..08ea632
+--- /dev/null
++++ b/intersections/GoIntersectionsConfig.cmake.in
+@@ -0,0 +1,5 @@
++set(GoIntersections_INCLUDE_DIRS @CMAKE_INSTALL_PREFIX@/include)
++set(GoIntersections_LIBRARIES -L@CMAKE_INSTALL_PREFIX@/lib -lGoIntersections)
++set(GoIntersections_VERSION_MAJOR @GoTools_VERSION_MAJOR@)
++set(GoIntersections_VERSION_MINOR @GoTools_VERSION_MINOR@)
++set(GoIntersections_VERSION_PATCH @GoTools_VERSION_PATCH@)
+diff --git a/isogeometric_model/CMakeLists.txt b/isogeometric_model/CMakeLists.txt
+index b644b6c..8564b98 100644
+--- a/isogeometric_model/CMakeLists.txt
++++ b/isogeometric_model/CMakeLists.txt
+@@ -106,3 +106,6 @@ ELSE(WIN32)
+ ENDIF(WIN32)
+ 
+ SET(CPACK_STRIP_FILES ${CPACK_STRIP_FILES} libGoIsogeometricModel.so)
++
++configure_file(GoIsogeometricModelConfig.cmake.in GoIsogeometricModelConfig.cmake @ONLY)
++install(FILES ${CMAKE_CURRENT_BINARY_DIR}/GoIsogeometricModelConfig.cmake DESTINATION lib/GoIsogeometricModel)
+diff --git a/isogeometric_model/GoIsogeometricModelConfig.cmake.in b/isogeometric_model/GoIsogeometricModelConfig.cmake.in
+new file mode 100644
+index 0000000..30ca6a9
+--- /dev/null
++++ b/isogeometric_model/GoIsogeometricModelConfig.cmake.in
+@@ -0,0 +1,5 @@
++set(GoIsogeometricModel_INCLUDE_DIRS @CMAKE_INSTALL_PREFIX@/include)
++set(GoIsogeometricModel_LIBRARIES -L@CMAKE_INSTALL_PREFIX@/lib -lGoIsogeometricModel)
++set(GoIsogeometricModel_VERSION_MAJOR @GoTools_VERSION_MAJOR@)
++set(GoIsogeometricModel_VERSION_MINOR @GoTools_VERSION_MINOR@)
++set(GoIsogeometricModel_VERSION_PATCH @GoTools_VERSION_PATCH@)
+diff --git a/parametrization/CMakeLists.txt b/parametrization/CMakeLists.txt
+index 8ce93a0..4e5ec9a 100644
+--- a/parametrization/CMakeLists.txt
++++ b/parametrization/CMakeLists.txt
+@@ -76,3 +76,6 @@ ELSE(WIN32)
+ ENDIF(WIN32)
+ 
+ SET(CPACK_STRIP_FILES ${CPACK_STRIP_FILES} libparametrization.so)
++
++configure_file(parametrizationConfig.cmake.in parametrizationConfig.cmake @ONLY)
++install(FILES ${CMAKE_CURRENT_BINARY_DIR}/parametrizationConfig.cmake DESTINATION lib/parametrization)
+diff --git a/parametrization/parametrizationConfig.cmake.in b/parametrization/parametrizationConfig.cmake.in
+new file mode 100644
+index 0000000..322d177
+--- /dev/null
++++ b/parametrization/parametrizationConfig.cmake.in
+@@ -0,0 +1,5 @@
++set(parametrization_INCLUDE_DIRS @CMAKE_INSTALL_PREFIX@/include)
++set(parametrization_LIBRARIES -L@CMAKE_INSTALL_PREFIX@/lib -lparametrization)
++set(parametrization_VERSION_MAJOR @GoTools_VERSION_MAJOR@)
++set(parametrization_VERSION_MINOR @GoTools_VERSION_MINOR@)
++set(parametrization_VERSION_PATCH @GoTools_VERSION_PATCH@)
+diff --git a/qualitymodule/CMakeLists.txt b/qualitymodule/CMakeLists.txt
+index 38eb712..6a8cf7c 100644
+--- a/qualitymodule/CMakeLists.txt
++++ b/qualitymodule/CMakeLists.txt
+@@ -103,3 +103,6 @@ ELSE(WIN32)
+ ENDIF(WIN32)
+ 
+ SET(CPACK_STRIP_FILES ${CPACK_STRIP_FILES} libGoQualityModule.so)
++
++configure_file(GoQualityModuleConfig.cmake.in GoQualityModuleConfig.cmake @ONLY)
++install(FILES ${CMAKE_CURRENT_BINARY_DIR}/GoQualityModuleConfig.cmake DESTINATION lib/GoQualityModule)
+diff --git a/qualitymodule/GoQualityModuleConfig.cmake.in b/qualitymodule/GoQualityModuleConfig.cmake.in
+new file mode 100644
+index 0000000..64d6b23
+--- /dev/null
++++ b/qualitymodule/GoQualityModuleConfig.cmake.in
+@@ -0,0 +1,5 @@
++set(GoQualityModule_INCLUDE_DIRS @CMAKE_INSTALL_PREFIX@/include)
++set(GoQualityModule_LIBRARIES -L@CMAKE_INSTALL_PREFIX@/lib -lGoQualityModule)
++set(GoQualityModule_VERSION_MAJOR @GoTools_VERSION_MAJOR@)
++set(GoQualityModule_VERSION_MINOR @GoTools_VERSION_MINOR@)
++set(GoQualityModule_VERSION_PATCH @GoTools_VERSION_PATCH@)
+diff --git a/topology/CMakeLists.txt b/topology/CMakeLists.txt
+index 27cfbc8..96a8a40 100644
+--- a/topology/CMakeLists.txt
++++ b/topology/CMakeLists.txt
+@@ -79,3 +79,6 @@ ELSE(WIN32)
+ ENDIF(WIN32)
+ 
+ SET(CPACK_STRIP_FILES ${CPACK_STRIP_FILES} libGoTopology.so)
++
++configure_file(GoTopologyConfig.cmake.in GoTopologyConfig.cmake @ONLY)
++install(FILES ${CMAKE_CURRENT_BINARY_DIR}/GoTopologyConfig.cmake DESTINATION lib/GoTopology)
+diff --git a/topology/GoTopologyConfig.cmake.in b/topology/GoTopologyConfig.cmake.in
+new file mode 100644
+index 0000000..ae34675
+--- /dev/null
++++ b/topology/GoTopologyConfig.cmake.in
+@@ -0,0 +1,5 @@
++set(GoTopology_INCLUDE_DIRS @CMAKE_INSTALL_PREFIX@/include)
++set(GoTopology_LIBRARIES -L@CMAKE_INSTALL_PREFIX@/lib -lGoTopology)
++set(GoTopology_VERSION_MAJOR @GoTools_VERSION_MAJOR@)
++set(GoTopology_VERSION_MINOR @GoTools_VERSION_MINOR@)
++set(GoTopology_VERSION_PATCH @GoTools_VERSION_PATCH@)
+diff --git a/trivariate/CMakeLists.txt b/trivariate/CMakeLists.txt
+index 0a57fd1..006d702 100644
+--- a/trivariate/CMakeLists.txt
++++ b/trivariate/CMakeLists.txt
+@@ -80,3 +80,6 @@ ELSE(WIN32)
+ ENDIF(WIN32)
+ 
+ SET(CPACK_STRIP_FILES ${CPACK_STRIP_FILES} libGoTrivariate.so)
++
++configure_file(GoTrivariateConfig.cmake.in GoTrivariateConfig.cmake @ONLY)
++install(FILES ${CMAKE_CURRENT_BINARY_DIR}/GoTrivariateConfig.cmake DESTINATION lib/GoTrivariate)
+diff --git a/trivariate/GoTrivariateConfig.cmake.in b/trivariate/GoTrivariateConfig.cmake.in
+new file mode 100644
+index 0000000..f87e898
+--- /dev/null
++++ b/trivariate/GoTrivariateConfig.cmake.in
+@@ -0,0 +1,5 @@
++set(GoTrivariate_INCLUDE_DIRS @CMAKE_INSTALL_PREFIX@/include)
++set(GoTrivariate_LIBRARIES -L@CMAKE_INSTALL_PREFIX@/lib -lGoTrivariate)
++set(GoTrivariate_VERSION_MAJOR @GoTools_VERSION_MAJOR@)
++set(GoTrivariate_VERSION_MINOR @GoTools_VERSION_MINOR@)
++set(GoTrivariate_VERSION_PATCH @GoTools_VERSION_PATCH@)
+diff --git a/trivariatemodel/CMakeLists.txt b/trivariatemodel/CMakeLists.txt
+index 56858a3..4efdbd4 100644
+--- a/trivariatemodel/CMakeLists.txt
++++ b/trivariatemodel/CMakeLists.txt
+@@ -106,3 +106,6 @@ ELSE(WIN32)
+ ENDIF(WIN32)
+ 
+ SET(CPACK_STRIP_FILES ${CPACK_STRIP_FILES} libGoTrivariateModel.so)
++
++configure_file(GoTrivariateModelConfig.cmake.in GoTrivariateModelConfig.cmake @ONLY)
++install(FILES ${CMAKE_CURRENT_BINARY_DIR}/GoTrivariateModelConfig.cmake DESTINATION lib/GoTrivariateModel)
+diff --git a/trivariatemodel/GoTrivariateModelConfig.cmake.in b/trivariatemodel/GoTrivariateModelConfig.cmake.in
+new file mode 100644
+index 0000000..06b9b48
+--- /dev/null
++++ b/trivariatemodel/GoTrivariateModelConfig.cmake.in
+@@ -0,0 +1,5 @@
++set(GoTrivariateModel_INCLUDE_DIRS @CMAKE_INSTALL_PREFIX@/include)
++set(GoTrivariateModel_LIBRARIES -L@CMAKE_INSTALL_PREFIX@/lib -lGoTrivariateModel)
++set(GoTrivariateModel_VERSION_MAJOR @GoTools_VERSION_MAJOR@)
++set(GoTrivariateModel_VERSION_MINOR @GoTools_VERSION_MINOR@)
++set(GoTrivariateModel_VERSION_PATCH @GoTools_VERSION_PATCH@)
+-- 
+1.9.1
+

@@ -1,2 +1,3 @@
 usr/include/GoTools/qualitymodule/*
 usr/lib/libGoQualityModule.so
+usr/lib/GoQualityModule/*

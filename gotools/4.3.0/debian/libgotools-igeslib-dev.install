@@ -1,2 +1,3 @@
 usr/include/GoTools/igeslib/*
 usr/lib/libGoIgeslib.so
+usr/lib/GoIgeslib/*

@@ -1,2 +1,3 @@
 usr/include/GoTools/intersections/*
 usr/lib/libGoIntersections.so
+usr/lib/GoIntersections/*
