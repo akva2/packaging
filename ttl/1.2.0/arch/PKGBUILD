@@ -1,0 +1,47 @@
+pkgname=ttl
+pkgver=1.2.0.0.ga7f090f
+pkgrel=1
+pkgdesc="Triangulation Template Library"
+arch=('x86_64')
+url="https://github.com/SINTEF-Geometry/TTL"
+license=('AGPL3')
+groups=()
+depends=()
+makedepends=('git' 'cmake')
+provides=("$pkgname")
+conflicts=("$pkgname")
+replaces=()
+backup=()
+options=()
+install=
+source=('ttl::git+https://github.com/SINTEF-Geometry/TTL#tag=TTL-1.2.0'
+        '0001-add-soversion.patch'
+        '0002-add-config-mode.patch')
+noextract=()
+md5sums=('SKIP'
+         'b51a71a774564e9aaa548c29bce66166'
+         '7eb20a9339d75a0adf887bb4cdcd9537')
+
+pkgver() {
+    cd "$srcdir/${pkgname}"
+    printf "%s" "$(git describe --tags --long | sed 's/TTL-//g;s/-/\./g')"
+}
+
+prepare() {
+    cd "$srcdir/${pkgname}"
+    patch -p1 -i "$srcdir/0001-add-soversion.patch"
+    patch -p1 -i "$srcdir/0002-add-config-mode.patch"
+}
+
+build() {
+    cd "$srcdir/${pkgname}"
+    mkdir build
+    cd build
+    cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=1
+    make
+}
+
+package () {
+    cd "$srcdir/${pkgname}/build"
+    make DESTDIR="$pkgdir/" install
+}

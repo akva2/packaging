@@ -1,0 +1,46 @@
+From aa5fad387a486bfc724ee80b0e3fe6f225c958e3 Mon Sep 17 00:00:00 2001
+From: Arne Morten Kvarving <arne.morten.kvarving@sintef.no>
+Date: Thu, 12 Mar 2015 12:35:12 +0100
+Subject: [PATCH 1/2] fixed: forgotten weights in SplineCurve::computeBasis for
+ rational curves
+
+---
+ gotools-core/src/geometry/GSCpoint.C | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/gotools-core/src/geometry/GSCpoint.C b/gotools-core/src/geometry/GSCpoint.C
+index b7739ef..11be06c 100644
+--- a/gotools-core/src/geometry/GSCpoint.C
++++ b/gotools-core/src/geometry/GSCpoint.C
+@@ -185,21 +185,23 @@ void SplineCurve::computeBasis(double param,
+ 
+   if (rational_)
+     {
+-      int pos = (dim_ + 1) * (basis_.lastKnotInterval() - ord + 1) + dim_;
++      int i, pos = (dim_ + 1) * (basis_.lastKnotInterval() - ord + 1) + dim_;
+ 
+       double w_func = 0.0;
+       double w_der = 0.0;
+-      for (int i = 0; i < ord; ++i, pos += dim_ + 1)
++      for (i = 0; i < ord; ++i, pos += dim_ + 1)
+ 	{
+ 	  double w = rcoefs_[pos];
+ 	  w_func += w * basisvals[i * 2];
+ 	  w_der += w * basisvals[i * 2 + 1];
+ 	}
++      pos = (dim_ + 1) * (basis_.lastKnotInterval() - ord + 1) + dim_;
+       double w_func_2 = w_func * w_func;
+-      for (int i = 0; i < ord; ++i)
++      for (i = 0; i < ord; ++i, pos += dim_ + 1)
+ 	{
+-	  basisValues[i] = basisvals[i*2] / w_func;
+-	  basisDerivs[i] = (basisvals[i*2 + 1] * w_func - basisvals[i*2] * w_der) / w_func_2;
++          double w = rcoefs_[pos];
++	  basisValues[i] = basisvals[i*2] * w / w_func;
++	  basisDerivs[i] = (basisvals[i*2 + 1] * w_func - basisvals[i*2] * w_der) * w / w_func_2;
+ 	}
+     }
+   else
+-- 
+1.9.1
+

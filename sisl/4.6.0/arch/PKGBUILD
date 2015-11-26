@@ -1,0 +1,47 @@
+pkgname=sisl
+pkgver=4.6.0.0.g7124051
+pkgrel=1
+pkgdesc="SINTEF Spline Library"
+arch=('x86_64')
+url="https://github.com/SINTEF-Geometry/SISL"
+license=('AGPL3')
+groups=()
+depends=()
+makedepends=('git' 'cmake')
+provides=("$pkgname")
+conflicts=("$pkgname")
+replaces=()
+backup=()
+options=()
+install=
+source=('sisl::git+https://github.com/SINTEF-Geometry/SISL#tag=SISL-4.6.0'
+        '0001-add-soversion.patch'
+        '0002-add-config-file.patch')
+noextract=()
+md5sums=('SKIP'
+         'fb09c94b5b4e1d643bd9aba767455f94'
+         'a574abcbcf3a5fc933b1feada69e1b0d')
+
+pkgver() {
+    cd "$srcdir/${pkgname}"
+    printf "%s" "$(git describe --tags --long | sed 's/SISL-//g;s/-/\./g')"
+}
+
+prepare() {
+    cd "$srcdir/${pkgname}"
+    patch -p1 -i "$srcdir/0001-add-soversion.patch"
+    patch -p1 -i "$srcdir/0002-add-config-file.patch"
+}
+
+build() {
+    cd "$srcdir/${pkgname}"
+    mkdir build
+    cd build
+    cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=1
+    make
+}
+
+package () {
+    cd "$srcdir/${pkgname}/build"
+    make DESTDIR="$pkgdir/" install
+}

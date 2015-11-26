@@ -1,0 +1,67 @@
+pkgname=gotools
+pkgver=4.3.0.0.g93ec40d
+pkgrel=1
+pkgdesc="Collection of geometry C++ libraries"
+arch=('x86_64')
+url="https://github.com/SINTEF-Geometry/GoTools"
+license=('AGPL3')
+groups=()
+depends=('ttl' 'sisl')
+makedepends=('git' 'cmake' 'ttl' 'sisl')
+provides=("$pkgname")
+conflicts=("$pkgname")
+replaces=()
+backup=()
+options=()
+install=
+source=('gotools::git+https://github.com/SINTEF-Geometry/GoTools#tag=GoTools-4.3.0'
+        '0001-fixed-forgotten-weights-in-SplineCurve-computeBasis-.patch'
+        '0002-use-system-provided-newmat-library.patch'
+        '0003-use-system-provided-ttl-library.patch'
+        '0004-use-system-provided-sisl-library.patch'
+        '0005-added-ability-to-evaluate-N-uni-directional-derivati.patch'
+        '0006-added-install-config-mode-files.patch'
+        '0007-Fix-some-build-errors.patch')
+noextract=()
+md5sums=('SKIP'
+         '1a0e8825a23491f383e5b33864f98e15'
+         'dd36f85f765220bccec34f2ec04b3309'
+         '5cf41f4bff92e628fe800470d925ab1e'
+         '528e4b000f918467c72bb6819aae0a8b'
+         '6bd3f2d15bedb4696c522d551c6114c2'
+         '33fd3fad63878b46876fa5fedac864c6'
+         '153591c7f045ea083975694afcedddf1')
+
+pkgver() {
+    cd "$srcdir/${pkgname}"
+    printf "%s" "$(git describe --tags --long | sed 's/GoTools-//g;s/-/\./g')"
+}
+
+prepare() {
+    cd "$srcdir/${pkgname}"
+    patch -p1 -i "$srcdir/0001-fixed-forgotten-weights-in-SplineCurve-computeBasis-.patch"
+    patch -p1 -i "$srcdir/0002-use-system-provided-newmat-library.patch"
+    patch -p1 -i "$srcdir/0003-use-system-provided-ttl-library.patch"
+    patch -p1 -i "$srcdir/0004-use-system-provided-sisl-library.patch"
+    patch -p1 -i "$srcdir/0005-added-ability-to-evaluate-N-uni-directional-derivati.patch"
+    patch -p1 -i "$srcdir/0006-added-install-config-mode-files.patch"
+    patch -p1 -i "$srcdir/0007-Fix-some-build-errors.patch"
+}
+
+build() {
+    cd "$srcdir/${pkgname}"
+    mkdir build
+    cd build
+    cmake ..\
+          -DCMAKE_BUILD_TYPE=Release\
+          -DCMAKE_POSITION_INDEPENDENT_CODE=1\
+          -DGoTools_COMPILE_APPS=0\
+          -DGoTools_COMPILE_MODULE_viewlib=0\
+          -DGoTools_COMPILE_MODULE_lrsplines2D=0
+    make
+}
+
+package () {
+    cd "$srcdir/${pkgname}/build"
+    make DESTDIR="$pkgdir/" install
+}
