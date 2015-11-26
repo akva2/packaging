@@ -1,0 +1,42 @@
+From e6ef4fad587331f79839793ae53704b182f24d0c Mon Sep 17 00:00:00 2001
+From: Eivind Fonn <evfonn@gmail.com>
+Date: Thu, 26 Nov 2015 15:31:57 +0100
+Subject: [PATCH] Fix some build errors
+
+---
+ compositemodel/src/ftSurface.C | 2 +-
+ igeslib/src/IGESconverter.C    | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/compositemodel/src/ftSurface.C b/compositemodel/src/ftSurface.C
+index 22bf97b..332d5a0 100644
+--- a/compositemodel/src/ftSurface.C
++++ b/compositemodel/src/ftSurface.C
+@@ -3430,7 +3430,7 @@ bool ftSurface::checkFaceTopology()
+       if (nmb1 != nmb2)
+ 	{
+ 	  std::cout << "Twin inconsistence. Different number of boundary loops. ";
+-	  std::cout << "Face1 = " << this << ", face2 = " << twin_ << std::cout;
++	  std::cout << "Face1 = " << this << ", face2 = " << twin_ << std::endl;
+ 	  isOK = false;
+ 	}
+       else
+diff --git a/igeslib/src/IGESconverter.C b/igeslib/src/IGESconverter.C
+index 63d385a..54ae831 100644
+--- a/igeslib/src/IGESconverter.C
++++ b/igeslib/src/IGESconverter.C
+@@ -4888,9 +4888,9 @@ void IGESconverter::writeSingleIGESLine(ostream& os,
+     char c;
+     bool eof_not_reached = true;
+  
+-    while ((eof_not_reached = (is.get(c) != 0)) && c == '$')//GoCOMMENT_START)
++    while ((eof_not_reached = (c = is.get())) && c == '$')//GoCOMMENT_START)
+     {
+-      while ((eof_not_reached = (is.get(c) != 0)) && c != '\n'); //GoCOMMENT_END );
++      while ((eof_not_reached = (c = is.get())) && c != '\n'); //GoCOMMENT_END );
+  
+       Utils::eatwhite(is);
+     }
+-- 
+2.6.2
+
