@@ -1,3 +1,9 @@
+gotools (4.3.0-4~precise) precise; urgency=medium
+
+  * Add config mode versioning
+
+ -- Arne Morten Kvarving <arne.morten.kvarving@sintef.no>  Wed, 25 Nov 2015 10:38:09 +0100
+
 gotools (4.3.0-3~precise) precise; urgency=medium
 
   * Add cmake config mode
