@@ -1,0 +1,26 @@
+Source: ifem-elasticity
+Priority: extra
+Maintainer: Arne Morten Kvarving <arne.morten.kvarving@sintef.no>
+Build-Depends: debhelper (>= 8.0.0), cmake, g++, gfortran,
+               libboost-dev, libblas-dev, liblapack-dev,
+               libarpack2-dev, libsuperlu3-dev,
+               libgotools-core-dev, libttl-dev, libsisl-dev,
+               libgotools-trivariate-dev, liblrspline1-dev, pkg-config,
+               libhdf5-serial-dev, libtinyxml-dev, doxygen, graphviz,
+               texlive-latex-extra, texlive-latex-recommended, libifem1-dev
+Standards-Version: 3.9.2
+Section: libs
+Homepage: http://ifem.no
+
+Package: ifem-elasticity
+Architecture: any
+Description: The IFEM Elasticity application
+ This module contains the IFEM Elasticity applications.
+
+Package: ifem-elasticity-dbg
+Section: debug
+Architecture: any
+Multi-Arch: foreign
+Depends: ifem-elasticity (= ${binary:Version}), ${misc:Depends}
+Description: The IFEM Elasticity application -- debug symbols
+ This module contains debug symbols for the IFEM Elasticity applications.
