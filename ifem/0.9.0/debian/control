@@ -1,0 +1,45 @@
+Source: ifem
+Priority: extra
+Maintainer: Arne Morten Kvarving <arne.morten.kvarving@sintef.no>
+Build-Depends: debhelper (>= 8.0.0), cmake, g++, gfortran,
+               libboost-dev, libblas-dev, liblapack-dev,
+               libarpack2-dev, libsuperlu3-dev,
+               libgotools-core-dev, libttl-dev, libsisl-dev,
+               libgotools-trivariate-dev, liblrspline1-dev, pkg-config,
+               libhdf5-serial-dev, libtinyxml-dev, doxygen, graphviz,
+               texlive-latex-extra, texlive-latex-recommended
+Standards-Version: 3.9.2
+Section: libs
+Homepage: http://ifem.no
+
+Package: libifem1-dev
+Provides: libifem-dev
+Section: libdevel
+Architecture: any
+Depends: libifem1 (= ${binary:Version})
+Description: The IFEM library -- development files
+ This module contains the development files for the IFEM library.
+
+Package: libifem1
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: The IFEM library
+ This module contains the IFEM library.
+
+Package: libifem1-doc
+Section: doc
+Architecture: any
+Multi-Arch: foreign
+Provides: libifem-doc
+Description: The IFEM library -- documentation
+ This module contains documentation for the IFEM library.
+
+Package: libifem1-dbg
+Section: debug
+Architecture: any
+Multi-Arch: foreign
+Provides: libifem-dbg
+Depends: libifem1 (= ${binary:Version}), ${misc:Depends}
+Description: The IFEM library -- debug symbols
+ This module contains debug symbols for the IFEM library.
