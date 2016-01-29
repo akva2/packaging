@@ -1,0 +1,25 @@
+#!/bin/bash
+
+dir=`mktemp -d /tmp/packaging.XXXX`
+
+git clone --depth=1 https://github.com/OPM/IFEM-Elasticity --branch $1 $dir/IFEM-Elasticity
+git clone /home/akva/kode/IFEM-OpenFrac --branch $2 $dir/IFEM-OpenFrac
+
+rm -Rf $dir/IFEM-Elasticity/.git
+rm -Rf $dir/IFEM-OpenFrac/.git
+
+orig_dir=`pwd`
+pushd $dir
+wget http://googletest.googlecode.com/files/gtest-1.6.0.zip
+unzip gtest-1.6.0.zip
+rm gtest-1.6.0.zip
+mv gtest-1.6.0 gtest
+
+mkdir ifem-openfrac-$3
+mv * ifem-openfrac-$3
+
+tar zcvf ifem-openfrac_$3.orig.tar.gz *
+
+cp -r $orig_dir $dir/ifem-openfrac-$3
+
+echo "Ready for packaging in $dir/ifem-openfrac-$3"
