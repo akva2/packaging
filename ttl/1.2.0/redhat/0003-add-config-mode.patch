@@ -1,0 +1,24 @@
+--- TTL-1.2.0/CMakeLists.txt.orig	2015-11-25 09:56:30.389437222 +0100
++++ TTL-1.2.0/CMakeLists.txt	2015-11-25 09:56:24.357437150 +0100
+@@ -91,3 +91,9 @@
+ ENDIF(NOT GoTools_ALL_COMPILE)
+ 
+ SET(CPACK_STRIP_FILES ${CPACK_STRIP_FILES} libttl.so)
++
++configure_file(TTLConfig.cmake.in TTLConfig.cmake @ONLY)
++configure_file(TTLConfigVersion.cmake.in TTLConfigVersion.cmake @ONLY)
++install(FILES ${CMAKE_CURRENT_BINARY_DIR}/TTLConfig.cmake
++              ${CMAKE_CURRENT_BINARY_DIR}/TTLConfigVersion.cmake
++        DESTINATION lib/TTL)
+--- /dev/null	2015-11-19 14:59:48.339440003 +0100
++++ TTL-1.2.0/TTLConfig.cmake.in	2015-11-25 09:55:14.605436314 +0100
+@@ -0,0 +1,2 @@
++set(TTL_INCLUDE_DIRS @CMAKE_INSTALL_PREFIX@/include)
++set(TTL_LIBRARIES -L@CMAKE_INSTALL_PREFIX@/lib -lttl)
+--- /dev/null	2015-11-19 14:59:48.339440003 +0100
++++ TTL-1.2.0/TTLConfigVersion.cmake.in	2015-11-25 09:55:41.317436634 +0100
+@@ -0,0 +1,4 @@
++set(PACKAGE_VERSION 1.2.0)
++set(PACKAGE_VERSION_MAJOR 1)
++set(PACKAGE_VERSION_MINOR 2)
++set(PACKAGE_VERSION_PATCH 0)
