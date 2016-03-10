@@ -1,0 +1,23 @@
+--- SISL/CMakeLists.txt	2015-11-16 09:46:53.845706635 +0100
++++ SISL-4.6.0/CMakeLists.txt	2015-11-24 17:04:23.092709127 +0100
+@@ -86,3 +86,9 @@
+ ENDIF(NOT GoTools_ALL_COMPILE)
+ 
+ SET(CPACK_STRIP_FILES ${CPACK_STRIP_FILES} libsisl.so)
++
++configure_file(SISLConfig.cmake.in SISLConfig.cmake @ONLY)
++configure_file(SISLConfigVersion.cmake.in SISLConfigVersion.cmake @ONLY)
++install(FILES ${CMAKE_CURRENT_BINARY_DIR}/SISLConfig.cmake
++              ${CMAKE_CURRENT_BINARY_DIR}/SISLConfigVersion.cmake
++              DESTINATION lib/SISL)
+--- /dev/null	2015-11-19 14:59:48.339440003 +0100
++++ SISL-4.6.0/SISLConfig.cmake.in	2015-11-24 17:03:01.120708144 +0100
+@@ -0,0 +1,2 @@
++set(SISL_INCLUDE_DIRS @CMAKE_INSTALL_PREFIX@/include)
++set(SISL_LIBRARIES -L@CMAKE_INSTALL_PREFIX@/lib -lsisl -lm)
+--- /dev/null	2015-11-19 14:59:48.339440003 +0100
++++ SISL-4.6.0/SISLConfigVersion.cmake.in	2015-11-24 17:02:52.520708041 +0100
+@@ -0,0 +1,3 @@
++set(PACAKGE_VERSION_MAJOR 4)
++set(PACKAGE_VERSION_MINOR 6)
++set(PACKAGE_VERSION_PATCH 0)
