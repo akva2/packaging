@@ -1,5 +1,5 @@
 #
-# spec file for package opm-core
+# spec file for package GoTools
 #
 
 Name:           GoTools
@@ -257,6 +257,7 @@ This package contains the documentation files for GoTools
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 
 %build
 cmake28 -DBUILD_SHARED_LIBS=1 -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=%{_prefix} -DGoTools_COMPILE_APPS=0 -DGoTools_COMPILE_MODULE_viewlib=0 -DBOOST_LIBRARYDIR=%{_libdir}/boost148 -DBOOST_INCLUDEDIR=/usr/include/boost148 -DGoTools_COMPILE_TESTS=0 -DGoTools_COMPILE_MODULE_lrsplines2D=0
@@ -321,6 +322,7 @@ rm -rf %{buildroot}
 %{_includedir}/GoTools/geometry/*
 %{_includedir}/GoTools/tesselator/*
 %{_includedir}/GoTools/utils/*
+%{_prefix}/lib/GoToolsCore/*
 
 %files -n libgotools-trivariate0
 %defattr(-,root,root,-)
@@ -330,6 +332,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_prefix}/lib/libGoTrivariate.so
 %{_includedir}/GoTools/trivariate/*
+%{_prefix}/lib/GoTrivariate/*
 
 %files -n libgotools-topology0
 %defattr(-,root,root,-)
@@ -339,6 +342,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_prefix}/lib/libGoTopology.so
 %{_includedir}/GoTools/topology/*
+%{_prefix}/lib/GoTopology/*
 
 %files -n libgotools-compositemodel0
 %defattr(-,root,root,-)
@@ -348,15 +352,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_prefix}/lib/libGoCompositeModel.so
 %{_includedir}/GoTools/compositemodel/*
-
-%files -n libgotools-newmat0
-%defattr(-,root,root,-)
-%{_prefix}/lib/libnewmat.so.*
-
-%files -n libgotools-newmat-devel
-%defattr(-,root,root,-)
-%{_prefix}/lib/libnewmat.so
-%{_includedir}/newmat/*
+%{_prefix}/lib/GoCompositeModel/*
 
 %files -n libgotools-igeslib0
 %defattr(-,root,root,-)
@@ -366,6 +362,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_prefix}/lib/libGoIgeslib.so
 %{_includedir}/GoTools/igeslib/*
+%{_prefix}/lib/GoIgeslib/*
 
 %files -n libgotools-implicitization0
 %defattr(-,root,root,-)
@@ -375,6 +372,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_prefix}/lib/libGoImplicitization.so
 %{_includedir}/GoTools/implicitization/*
+%{_prefix}/lib/GoImplicitization/*
 
 %files -n libgotools-intersections0
 %defattr(-,root,root,-)
@@ -384,6 +382,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_prefix}/lib/libGoIntersections.so
 %{_includedir}/GoTools/intersections/*
+%{_prefix}/lib/GoIntersections/*
 
 %files -n libgotools-isogeometricmodel0
 %defattr(-,root,root,-)
@@ -393,6 +392,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_prefix}/lib/libGoIsogeometricModel.so
 %{_includedir}/GoTools/isogeometric_model/*
+%{_prefix}/lib/GoIsogeometricModel/*
 
 %files -n libgotools-parametrization0
 %defattr(-,root,root,-)
@@ -402,6 +402,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_prefix}/lib/libparametrization.so
 %{_includedir}/GoTools/parametrization/*
+%{_prefix}/lib/parametrization/*
 
 %files -n libgotools-qualitymodule0
 %defattr(-,root,root,-)
@@ -411,6 +412,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_prefix}/lib/libGoQualityModule.so
 %{_includedir}/GoTools/qualitymodule/*
+%{_prefix}/lib/GoQualityModule/*
 
 %files -n libgotools-trivariatemodel0
 %defattr(-,root,root,-)
@@ -419,4 +421,5 @@ rm -rf %{buildroot}
 %files -n libgotools-trivariatemodel-devel
 %defattr(-,root,root,-)
 %{_prefix}/lib/libGoTrivariateModel.so
+%{_prefix}/lib/GoTrivariateModel/*
 %{_includedir}/GoTools/trivariatemodel/*
