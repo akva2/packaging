@@ -1,0 +1,11 @@
+--- GoTools-4.3.0/gotools-core/src/geometry/BoundedSurface.C.orig	2018-09-28 09:42:52.940437201 +0200
++++ GoTools-4.3.0/gotools-core/src/geometry/BoundedSurface.C	2018-09-28 09:43:13.764375096 +0200
+@@ -2736,7 +2736,7 @@
+ 	{
+ 	  shared_ptr<CurveOnSurface> cos = dynamic_pointer_cast<CurveOnSurface, ParamCurve>(*it);
+ 	  if (cos.get() == NULL)
+-	    return false;
++	    return NULL;
+ 	  shared_ptr<ParamCurve> pcrv;
+ 	  bool par_pref = cos->parPref();
+ 	  if (par_pref)

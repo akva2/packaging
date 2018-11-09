@@ -1,0 +1,100 @@
+commit 3635ba2e13e689115b4654fc70e0c4edd995a0ea
+Author: Arne Morten Kvarving <arne.morten.kvarving@sintef.no>
+Date:   Fri Nov 9 09:43:01 2018 +0100
+
+    added: support for second derivatives for nurbs curve basis
+
+diff --git a/gotools-core/include/GoTools/geometry/SplineCurve.h b/gotools-core/include/GoTools/geometry/SplineCurve.h
+index 6f7e0006..4423e736 100644
+--- a/gotools-core/include/GoTools/geometry/SplineCurve.h
++++ b/gotools-core/include/GoTools/geometry/SplineCurve.h
+@@ -314,6 +314,20 @@ public:
+ 		      std::vector<double>& basisValues,
+ 		      std::vector<double>& basisDerivs) const;
+ 
++    /// Evaluate positions and two derivatives of all basis values in a given parameter
++    /// For non-rationals this is an interface to BsplineBasis::computeBasisValues,
++    /// for rationals the routine evaluates the rational
++    /// basis functions, i.e. the basis functions are divided by the denominator of the
++    /// curve
++    /// \param param the parameter in which to compute
++    /// \param basisValues the value of all basis functions, size equal to (degree_u+1)
++    /// \param basisDerivs the derivative of all basis functions, same size as previous
++    /// \param basisDerivs2 the second derivative of all basis functions, same size as previous
++    void computeBasis(double param,
++		      std::vector<double>& basisValues,
++		      std::vector<double>& basisDerivs,
++          std::vector<double>& basisDerivs2);
++
+     /// Evaluation in a number of points
+     /// Does not gain effectivity compared to evaluating the points one at the
+     /// time, but provides a unified interface
+diff --git a/gotools-core/src/geometry/GSCpoint.C b/gotools-core/src/geometry/GSCpoint.C
+index b7739efc..f483a939 100644
+--- a/gotools-core/src/geometry/GSCpoint.C
++++ b/gotools-core/src/geometry/GSCpoint.C
+@@ -213,7 +213,64 @@ void SplineCurve::computeBasis(double param,
+ }
+ 
+ 
++//===========================================================================
++void SplineCurve::computeBasis(double param,
++                               std::vector<double>& basisValues,
++                               std::vector<double>& basisDerivs,
++                               std::vector<double>& basisDerivs2)
++//===========================================================================
++{
++  int ord = basis_.order();
++
++  basisValues.resize(ord);
++  basisDerivs.resize(ord);
++  basisDerivs2.resize(ord);
++
++  std::vector<double> basisvals(3 * basis_.order());
++  basis_.computeBasisValues(param, &basisvals[0], 2);
++
++  if (rational_)
++  {
++    int i, pos = (dim_ + 1) * (basis_.lastKnotInterval() - ord + 1) + dim_;
+ 
++    double w_func = 0.0;
++    double w_der = 0.0;
++    double w_dder = 0.0;
++    for (i = 0; i < ord; ++i, pos += dim_ + 1)
++    {
++      double& w = rcoefs_[pos];
++      w_func += w * basisvals[i * 3];
++      w_der  += w * basisvals[i * 3 + 1];
++      w_dder += w * basisvals[i * 3 + 2];
++    }
++    pos = (dim_ + 1) * (basis_.lastKnotInterval() - ord + 1) + dim_;
++    double w_func_2 = w_func * w_func;
++    for (i = 0; i < ord; ++i, pos += dim_ + 1)
++    {
++      double& w = rcoefs_[pos];
++      double& Ni = basisvals[i*3];
++      double& Nid = basisvals[i*3+1];
++      double& Nidd = basisvals[i*3+2];
++      basisValues[i] = Ni * w / w_func;
++      double u = Nid * w_func - Ni * w_der;
++      double ud =  Nidd * w_func + Nid * w_der
++                - (Nid * w_der + Ni * w_dder);
++      double v = w_func_2;
++      basisDerivs[i] = u*w / v;
++      double vd = 2 * w_func * w_der;
++      basisDerivs2[i] = (ud*v - u*vd)*w/(w_func_2*w_func_2);
++    }
++  }
++  else
++  {
++    for (int i = 0; i < ord; ++i)
++    {
++      basisValues[i]  = basisvals[i*3];
++      basisDerivs[i]  = basisvals[i*3 + 1];
++      basisDerivs2[i] = basisvals[i*3 + 2];
++    }
++  }
++}
+ 
+ 
+ //===========================================================================

@@ -1,0 +1,109 @@
+--- GoTools-4.3.0/gotools-core/src/creators/SmoothCurveSet.C.orig	2018-09-28 09:28:07.459157027 +0200
++++ GoTools-4.3.0/gotools-core/src/creators/SmoothCurveSet.C	2018-09-28 09:28:27.343092981 +0200
+@@ -41,6 +41,7 @@
+ #include "GoTools/creators/SolveCGCO.h"
+ #include "GoTools/creators/SolveBCG.h"
+ #include "GoTools/creators/Integrate.h"
++#include <cfloat>
+ 
+ using std::vector;
+ using namespace Go;
+@@ -306,12 +307,12 @@
+   double dist1, dist2;
+   int in=cv->numCoefs();
+   
+-  double min_support_frac = HUGE;
++  double min_support_frac = DBL_MAX;
+   double tol = -1.0;
+   int ki;
+   while (true)
+     {
+-      min_support_frac = HUGE; // We reset the value for each iteration.
++      min_support_frac = DBL_MAX; // We reset the value for each iteration.
+       int k1=cv->order() - min_deriv;
+       for(ki=min_deriv; ki<in-1; ki++)
+ 	{
+--- GoTools-4.3.0/gotools-core/src/creators/ApproxSurf.C.orig	2018-09-28 09:28:46.723030770 +0200
++++ GoTools-4.3.0/gotools-core/src/creators/ApproxSurf.C	2018-09-28 09:29:16.342936074 +0200
+@@ -42,6 +42,7 @@
+ #include "GoTools/geometry/CurveLoop.h"
+ #include "GoTools/creators/CoonsPatchGen.h"
+ #include <algorithm>
++#include <cfloat>
+ #include <fstream>
+ #include <iterator>
+ 
+@@ -300,13 +301,13 @@
+   int in1=sf->numCoefs_u();
+   int in2=sf->numCoefs_v();
+   
+-  double min_support_frac = HUGE;
++  double min_support_frac = DBL_MAX;
+   double tol = -1.0;
+   int ki;
+   int min_deriv_u = min_deriv;
+   while (true)
+     {
+-      min_support_frac = HUGE; // We reset the value for each iteration.
++      min_support_frac = DBL_MAX; // We reset the value for each iteration.
+       int k1=sf->order_u() - min_deriv_u;
+       vector<double>::const_iterator st1 = sf->basis_u().begin();
+       for(ki=min_deriv; ki<in1-1; ki++)
+@@ -339,7 +340,7 @@
+   int min_deriv_v = min_deriv;
+   while (true)
+     {
+-      min_support_frac = HUGE; // We reset the value for each iteration.
++      min_support_frac = DBL_MAX; // We reset the value for each iteration.
+       int k1=sf->order_v() - min_deriv_v;
+       vector<double>::const_iterator st2 = sf->basis_v().begin();
+       for(ki=min_deriv; ki<in2-1; ki++)
+--- GoTools-4.3.0/gotools-core/src/geometry/SISL_code.C.orig	2018-09-28 09:56:25.716412027 +0200
++++ GoTools-4.3.0/gotools-core/src/geometry/SISL_code.C	2018-09-28 09:56:47.660408872 +0200
+@@ -168,6 +168,9 @@
+ #  endif
+ #endif
+ 
++#include <cfloat>
++#define HUGE DBL_MAX
++
+ 
+ enum {  SI_ORD = 1, SI_SING, SI_TRIM, SI_TOUCH };
+ enum {  SI_UNDEF, SI_IN, SI_OUT, SI_ON, SI_AT };
+--- GoTools-4.3.0/compositemodel/src/CompleteEdgeNet.C.orig	2018-09-28 10:19:28.098383161 +0200
++++ GoTools-4.3.0/compositemodel/src/CompleteEdgeNet.C	2018-09-28 10:19:48.390341530 +0200
+@@ -43,6 +43,7 @@
+ #include "GoTools/compositemodel/Body.h"
+ #include "GoTools/compositemodel/EdgeVertex.h"
+ #include "GoTools/geometry/BoundedSurface.h"
++#include <cfloat>
+ #include <fstream>
+ 
+ //#define DEBUG
+@@ -1363,7 +1364,7 @@
+ 	{
+ 	  size_t ki2 = (kh + ki)%corners2.size();
+ 	  Point pnt1 = corners2[ki2].first->getVertexPoint();
+-	  double mindist = HUGE;
++	  double mindist = DBL_MAX;
+ 	  int minind = -1;
+ 	  for (kj=0; kj<vx2.size(); ++kj)
+ 	    {
+@@ -1393,7 +1394,7 @@
+     }
+ 
+   // Do the actual connection
+-  double mind = HUGE;
++  double mind = DBL_MAX;
+   int mincorner = -1;
+   for (kh=0; kh<acc_dist.size(); ++kh)
+     {
+@@ -1408,7 +1409,7 @@
+     {
+       ki = (kh + mincorner)%corners.size();
+ 
+-      double mindist = HUGE;
++      double mindist = DBL_MAX;
+       int minind = -1;
+       for (kj=0; kj<vx.size(); ++kj)
+ 	{

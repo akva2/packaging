@@ -4,3 +4,7 @@
 0004-use-system-provided-sisl-library.patch
 0005-added-ability-to-evaluate-N-uni-directional-derivati.patch
 0006-added-install-config-mode-files.patch
+0007-Fix-some-build-errors.patch
+0008-huge-issues.patch
+0009-null-not-false.patch
+0010-nurbs-curves-second-derivatives.patch
