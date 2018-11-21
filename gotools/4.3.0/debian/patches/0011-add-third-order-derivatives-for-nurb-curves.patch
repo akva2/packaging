@@ -1,18 +1,22 @@
-commit 2ae01ac0940b74eb613cb93df3c9a54b4f5185e4
-Author: Arne Morten Kvarving <arne.morten.kvarving@sintef.no>
-Date:   Fri Nov 9 09:43:01 2018 +0100
+From fd0e151cd9841d942ac7e055ab57076e3f5a23fb Mon Sep 17 00:00:00 2001
+From: Arne Morten Kvarving <arne.morten.kvarving@sintef.no>
+Date: Mon, 12 Nov 2018 08:16:23 +0100
+Subject: [PATCH 1/2] add third order derivatives for nurb curves
 
-    added: support for second derivatives for nurbs curve basis
+---
+ .../include/GoTools/geometry/SplineCurve.h    | 16 +++++
+ gotools-core/src/geometry/GSCpoint.C          | 68 +++++++++++++++++++
+ 2 files changed, 84 insertions(+)
 
 diff --git a/gotools-core/include/GoTools/geometry/SplineCurve.h b/gotools-core/include/GoTools/geometry/SplineCurve.h
-index 6f7e0006..fc089fd1 100644
+index fc089fd1..2a1653a9 100644
 --- a/gotools-core/include/GoTools/geometry/SplineCurve.h
 +++ b/gotools-core/include/GoTools/geometry/SplineCurve.h
-@@ -314,6 +314,20 @@ public:
- 		      std::vector<double>& basisValues,
- 		      std::vector<double>& basisDerivs) const;
+@@ -328,6 +328,22 @@ public:
+                       std::vector<double>& basisDerivs,
+                       std::vector<double>& basisDerivs2);
  
-+    /// Evaluate positions and two derivatives of all basis values in a given parameter
++    /// Evaluate positions and three derivatives of all basis values in a given parameter
 +    /// For non-rationals this is an interface to BsplineBasis::computeBasisValues,
 +    /// for rationals the routine evaluates the rational
 +    /// basis functions, i.e. the basis functions are divided by the denominator of the
@@ -21,37 +25,41 @@ index 6f7e0006..fc089fd1 100644
 +    /// \param basisValues the value of all basis functions, size equal to (degree_u+1)
 +    /// \param basisDerivs the derivative of all basis functions, same size as previous
 +    /// \param basisDerivs2 the second derivative of all basis functions, same size as previous
++    /// \param basisDerivs3 the second derivative of all basis functions, same size as previous
 +    void computeBasis(double param,
 +                      std::vector<double>& basisValues,
 +                      std::vector<double>& basisDerivs,
-+                      std::vector<double>& basisDerivs2);
++                      std::vector<double>& basisDerivs2,
++                      std::vector<double>& basisDerivs3);
 +
      /// Evaluation in a number of points
      /// Does not gain effectivity compared to evaluating the points one at the
      /// time, but provides a unified interface
 diff --git a/gotools-core/src/geometry/GSCpoint.C b/gotools-core/src/geometry/GSCpoint.C
-index b7739efc..509e144d 100644
+index 0c2d84f6..e8c133f8 100644
 --- a/gotools-core/src/geometry/GSCpoint.C
 +++ b/gotools-core/src/geometry/GSCpoint.C
-@@ -213,7 +213,64 @@ void SplineCurve::computeBasis(double param,
+@@ -274,6 +274,74 @@ void SplineCurve::computeBasis(double param,
+   }
  }
- 
  
 +//===========================================================================
 +void SplineCurve::computeBasis(double param,
 +                               std::vector<double>& basisValues,
 +                               std::vector<double>& basisDerivs,
-+                               std::vector<double>& basisDerivs2)
++                               std::vector<double>& basisDerivs2,
++                               std::vector<double>& basisDerivs3)
 +//===========================================================================
 +{
 +  int ord = basis_.order();
- 
++
 +  basisValues.resize(ord);
 +  basisDerivs.resize(ord);
 +  basisDerivs2.resize(ord);
++  basisDerivs3.resize(ord);
 +
-+  std::vector<double> basisvals(3 * basis_.order());
-+  basis_.computeBasisValues(param, &basisvals[0], 2);
++  std::vector<double> basisvals(4 * basis_.order());
++  basis_.computeBasisValues(param, &basisvals[0], 3);
 +
 +  if (rational_)
 +  {
@@ -60,20 +68,23 @@ index b7739efc..509e144d 100644
 +    double w_func = 0.0;
 +    double w_der = 0.0;
 +    double w_dder = 0.0;
++    double w_ddder = 0.0;
 +    for (i = 0; i < ord; ++i, pos += dim_ + 1)
 +    {
-+      double& w = rcoefs_[pos];
-+      w_func += w * basisvals[i * 3];
-+      w_der  += w * basisvals[i * 3 + 1];
-+      w_dder += w * basisvals[i * 3 + 2];
++      double w = rcoefs_[pos];
++      w_func += w * basisvals[i * 4];
++      w_der  += w * basisvals[i * 4 + 1];
++      w_dder += w * basisvals[i * 4 + 2];
++      w_ddder += w * basisvals[i * 4 + 3];
 +    }
 +    pos = (dim_ + 1) * (basis_.lastKnotInterval() - ord + 1) + dim_;
 +    for (i = 0; i < ord; ++i, pos += dim_ + 1)
 +    {
 +      double& w = rcoefs_[pos];
-+      double& Ni = basisvals[i*3];
-+      double& Nid = basisvals[i*3+1];
-+      double& Nidd = basisvals[i*3+2];
++      double& Ni = basisvals[i*4];
++      double& Nid = basisvals[i*4+1];
++      double& Nidd = basisvals[i*4+2];
++      double& Niddd = basisvals[i*4+3];
 +
 +      basisValues[i] = Ni * w / w_func;
 +
@@ -83,18 +94,26 @@ index b7739efc..509e144d 100644
 +
 +      double G = dH*w_func - 2*H*w_der;
 +      basisDerivs2[i] = G*w/pow(w_func,3.0);
++
++      double d2H = Niddd*w_func + Nidd*w_der - Nid*w_dder - Ni*w_ddder;
++      double dG = d2H*w_func - 2*H*w_dder - dH*w_der;
++      basisDerivs3[i] = (dG*w_func - 3*G*w_der)*w/pow(w_func,4);
 +    }
 +  }
 +  else
 +  {
 +    for (int i = 0; i < ord; ++i)
 +    {
-+      basisValues[i]  = basisvals[i*3];
-+      basisDerivs[i]  = basisvals[i*3 + 1];
-+      basisDerivs2[i] = basisvals[i*3 + 2];
++      basisValues[i]  = basisvals[i*4];
++      basisDerivs[i]  = basisvals[i*4 + 1];
++      basisDerivs2[i] = basisvals[i*4 + 2];
++      basisDerivs3[i] = basisvals[i*4 + 3];
 +    }
 +  }
 +}
  
- 
  //===========================================================================
+ void SplineCurve::gridEvaluator(std::vector<double>& points,
+-- 
+2.17.1
+

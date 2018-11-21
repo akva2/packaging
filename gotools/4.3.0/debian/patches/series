@@ -8,3 +8,5 @@
 0008-huge-issues.patch
 0009-null-not-false.patch
 0010-nurbs-curves-second-derivatives.patch
+0011-add-third-order-derivatives-for-nurb-curves.patch
+0012-added-third-order-derivatives-for-rational-spline-su.patch
